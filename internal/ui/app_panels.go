@@ -28,8 +28,8 @@ import (
 	"github.com/eosaios/eos/internal/ui/panels"
 	"github.com/eosaios/eos/pkg/coreapi"
 
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
+	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 )
 
 // ctxUsageTickMsg 上下文使用率定时刷新消息
@@ -286,7 +286,6 @@ func memorySnapshotDocumentOf(documents []coreapi.MemoryDocument, scope string) 
 func overlayCenter(width, height int, background, overlay string) string {
 	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, overlay,
 		lipgloss.WithWhitespaceChars(" "),
-		lipgloss.WithWhitespaceForeground(lipgloss.Color("")),
 	)
 }
 

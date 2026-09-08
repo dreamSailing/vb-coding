@@ -21,7 +21,7 @@ import (
 	"github.com/eosaios/eos/internal/version"
 	"github.com/eosaios/eos/pkg/coreapi"
 
-	tea "github.com/charmbracelet/bubbletea"
+	tea "charm.land/bubbletea/v2"
 )
 
 var ansiPatternAppTest = regexp.MustCompile(`\x1b\[[0-9;]*m`)
@@ -122,19 +122,19 @@ func TestSlashHintsNavigationKeepsPanelAndInsertsCanonicalCommand(t *testing.T) 
 	testCases := []struct {
 		name      string
 		command   string
-		acceptKey tea.KeyMsg
+		acceptKey tea.KeyPressMsg
 		wantInput string
 	}{
 		{
 			name:      "enter accepts canonical command",
 			command:   "/lang",
-			acceptKey: tea.KeyMsg{Type: tea.KeyEnter},
+			acceptKey: tea.KeyPressMsg{Code: tea.KeyEnter},
 			wantInput: "/lang ",
 		},
 		{
 			name:      "tab accepts canonical command",
 			command:   "/workspace",
-			acceptKey: tea.KeyMsg{Type: tea.KeyTab},
+			acceptKey: tea.KeyPressMsg{Code: tea.KeyTab},
 			wantInput: "/workspace ",
 		},
 	}
@@ -146,7 +146,7 @@ func TestSlashHintsNavigationKeepsPanelAndInsertsCanonicalCommand(t *testing.T) 
 				t.Fatalf("expected shell view, got %q", app.activeView)
 			}
 
-			app = sendAppKey(t, app, tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'/'}})
+			app = sendAppKey(t, app, tea.KeyPressMsg{Code: '/', Text: "/"})
 			if got := app.shell.GetInputValue(); got != "/" {
 				t.Fatalf("expected input to contain slash trigger, got %q", got)
 			}
@@ -156,7 +156,7 @@ func TestSlashHintsNavigationKeepsPanelAndInsertsCanonicalCommand(t *testing.T) 
 
 			downs := findVisibleSlashCommandIndex(t, tc.command)
 			for i := 0; i < downs; i++ {
-				app = sendAppKey(t, app, tea.KeyMsg{Type: tea.KeyDown})
+				app = sendAppKey(t, app, tea.KeyPressMsg{Code: tea.KeyDown})
 				if !app.shell.IsHintsVisible() {
 					t.Fatalf("expected slash hints to remain visible after down navigation %d", i+1)
 				}
@@ -396,7 +396,7 @@ func TestPredictionUpdateMsgShowsPredictionForMatchingDraft(t *testing.T) {
 		t.Fatalf("input=%q, want 我", got)
 	}
 
-	updated = sendAppKey(t, updated, tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'们'}})
+	updated = sendAppKey(t, updated, tea.KeyPressMsg{Code: '们', Text: "们"})
 	if !updated.shell.HasPrediction() {
 		t.Fatalf("expected prediction to remain when typed input still matches prefix")
 	}
@@ -540,7 +540,7 @@ func TestThinkingLiveBlockTogglesInContentAndClearsWhenAnswerStarts(t *testing.T
 	}
 
 	historyLen := len(updated.history)
-	updated = sendAppKey(t, updated, tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'h'}, Alt: true})
+	updated = sendAppKey(t, updated, tea.KeyPressMsg{Code: 'h', Mod: tea.ModAlt})
 	view = stripANSIAppTest(updated.shell.View())
 	if !strings.Contains(view, "第一步分析") {
 		t.Fatalf("expected Alt+H to expand current thinking content, got %q", view)

@@ -27,7 +27,7 @@ import (
 	"github.com/eosaios/eos/internal/ui/panels"
 	"github.com/eosaios/eos/internal/ui/views/confirm"
 
-	tea "github.com/charmbracelet/bubbletea"
+	tea "charm.land/bubbletea/v2"
 )
 
 // WorkspaceReloadDoneMsg 工作区重载完成消息

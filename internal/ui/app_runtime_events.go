@@ -11,7 +11,7 @@ package ui
 import (
 	"github.com/eosaios/eos/internal/ui/adapter"
 
-	tea "github.com/charmbracelet/bubbletea"
+	tea "charm.land/bubbletea/v2"
 )
 
 // listenEvents 监听运行时事件

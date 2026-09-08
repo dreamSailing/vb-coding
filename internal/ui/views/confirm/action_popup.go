@@ -18,8 +18,8 @@ import (
 	"github.com/eosaios/eos/internal/i18n"
 	"github.com/eosaios/eos/internal/ui/styles"
 
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
+	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 )
 
 // ActionItem 描述弹框中一个可选动作。

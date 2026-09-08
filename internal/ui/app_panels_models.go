@@ -22,7 +22,7 @@ import (
 	"github.com/eosaios/eos/internal/ui/views/setup"
 	"github.com/eosaios/eos/pkg/coreapi"
 
-	tea "github.com/charmbracelet/bubbletea"
+	tea "charm.land/bubbletea/v2"
 )
 
 func (m *AppModel) refreshModelsPanel() {

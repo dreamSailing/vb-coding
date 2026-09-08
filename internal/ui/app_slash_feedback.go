@@ -6,8 +6,8 @@
 package ui
 
 import (
+	tea "charm.land/bubbletea/v2"
 	"fmt"
-	tea "github.com/charmbracelet/bubbletea"
 	"os/exec"
 	"runtime"
 )

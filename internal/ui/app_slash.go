@@ -25,7 +25,7 @@ import (
 	"github.com/eosaios/eos/internal/ui/panels"
 	"github.com/eosaios/eos/internal/version"
 
-	tea "github.com/charmbracelet/bubbletea"
+	tea "charm.land/bubbletea/v2"
 )
 
 // handleSlashCommand 处理斜杠命令

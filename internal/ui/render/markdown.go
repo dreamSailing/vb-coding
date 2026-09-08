@@ -15,7 +15,7 @@ import (
 	"github.com/charmbracelet/glamour"
 	gansi "github.com/charmbracelet/glamour/ansi"
 	glstyles "github.com/charmbracelet/glamour/styles"
-	"github.com/charmbracelet/lipgloss"
+	"charm.land/lipgloss/v2"
 	"github.com/muesli/termenv"
 )
 

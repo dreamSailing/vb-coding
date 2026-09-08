@@ -17,7 +17,7 @@ import (
 	"github.com/eosaios/eos/internal/i18n"
 	"github.com/eosaios/eos/internal/ui/views/setup"
 
-	tea "github.com/charmbracelet/bubbletea"
+	tea "charm.land/bubbletea/v2"
 )
 
 // handleItemStartedMsg 处理 ItemStartedMsg（Update 分支提取）。
@@ -188,8 +188,8 @@ func (m *AppModel) handleMouseMsg(msg tea.MouseMsg, cmds []tea.Cmd) (tea.Model, 
 		if m.handleContentSelection(msg) {
 			return m, m.finalizeUpdate(tea.Batch(cmds...))
 		}
-		if msg.Action == tea.MouseActionPress && msg.Button == tea.MouseButtonLeft {
-			if cmd := m.tryHandleBubbleActionAt(msg.X, msg.Y); cmd != nil {
+		if click, ok := msg.(tea.MouseClickMsg); ok && click.Button == tea.MouseLeft {
+			if cmd := m.tryHandleBubbleActionAt(click.Mouse().X, click.Mouse().Y); cmd != nil {
 				cmds = append(cmds, cmd)
 				return m, tea.Batch(cmds...)
 			}

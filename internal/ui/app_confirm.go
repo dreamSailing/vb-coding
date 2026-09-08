@@ -32,8 +32,8 @@ import (
 	"github.com/eosaios/eos/internal/ui/panels"
 	"github.com/eosaios/eos/internal/ui/views/confirm"
 
+	tea "charm.land/bubbletea/v2"
 	"github.com/atotto/clipboard"
-	tea "github.com/charmbracelet/bubbletea"
 )
 
 // bubbleActionHit 记录一条可点击消息文本在内容区中的行范围，

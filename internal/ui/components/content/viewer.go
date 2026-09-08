@@ -8,9 +8,9 @@ package content
 import (
 	"strings"
 
-	"github.com/charmbracelet/bubbles/viewport"
-	"github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
+	"charm.land/bubbles/v2/viewport"
+	"charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 )
 
 // Model 是内容查看器组件模型
@@ -26,7 +26,7 @@ type Model struct {
 
 // New 创建新的内容查看器模型
 func New(width, height int) Model {
-	vp := viewport.New(width, height)
+	vp := viewport.New(viewport.WithWidth(width), viewport.WithHeight(height))
 	vp.SetContent("")
 	vp.MouseWheelEnabled = true
 	vp.MouseWheelDelta = 3
@@ -43,8 +43,8 @@ func New(width, height int) Model {
 func (m *Model) SetSize(width, height int) {
 	m.width = width
 	m.height = height
-	m.viewport.Width = width
-	m.viewport.Height = height
+	m.viewport.SetWidth(width)
+	m.viewport.SetHeight(height)
 }
 
 // SetStyle 设置样式
@@ -89,7 +89,7 @@ func (m *Model) SetContent(text string) {
 
 func (m *Model) SetContentPreserveOffset(text string) {
 	atBottom := m.viewport.AtBottom()
-	old := m.viewport.YOffset
+	old := m.viewport.YOffset()
 	m.content.Reset()
 	m.content.WriteString(text)
 	m.viewport.SetContent(text)
@@ -102,8 +102,8 @@ func (m *Model) SetContentPreserveOffset(text string) {
 		lineCount = strings.Count(text, "\n") + 1
 	}
 	maxOffset := 0
-	if lineCount > m.viewport.Height {
-		maxOffset = lineCount - m.viewport.Height
+	if lineCount > m.viewport.Height() {
+		maxOffset = lineCount - m.viewport.Height()
 	}
 	if old < 0 {
 		old = 0
@@ -111,7 +111,7 @@ func (m *Model) SetContentPreserveOffset(text string) {
 	if old > maxOffset {
 		old = maxOffset
 	}
-	m.viewport.YOffset = old
+	m.viewport.SetYOffset(old)
 }
 
 // Content 获取内容
@@ -120,11 +120,11 @@ func (m *Model) Content() string {
 }
 
 func (m *Model) YOffset() int {
-	return m.viewport.YOffset
+	return m.viewport.YOffset()
 }
 
 func (m *Model) Height() int {
-	return m.viewport.Height
+	return m.viewport.Height()
 }
 
 func (m *Model) LineCount() int {

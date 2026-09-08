@@ -10,7 +10,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	tea "github.com/charmbracelet/bubbletea"
+	tea "charm.land/bubbletea/v2"
 	"github.com/eosaios/eos/pkg/coreapi"
 )
 

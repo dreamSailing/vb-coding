@@ -8,8 +8,8 @@ package panels
 import (
 	"strings"
 
-	"github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
+	"charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 )
 
 // LanguageChangeMsg 语言切换消息

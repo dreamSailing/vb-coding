@@ -15,7 +15,7 @@ import (
 	"github.com/eosaios/eos/internal/state"
 	"github.com/eosaios/eos/internal/ui/views/shell"
 
-	tea "github.com/charmbracelet/bubbletea"
+	tea "charm.land/bubbletea/v2"
 )
 
 // handleGlobalKey 处理全局快捷键，这些快捷键在所有视图中都有效

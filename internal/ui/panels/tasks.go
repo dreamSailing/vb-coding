@@ -15,10 +15,10 @@ import (
 	"github.com/eosaios/eos/internal/ui/styles"
 	"github.com/eosaios/eos/pkg/coreapi"
 
-	"github.com/charmbracelet/bubbles/table"
-	"github.com/charmbracelet/bubbles/viewport"
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
+	"charm.land/bubbles/v2/table"
+	"charm.land/bubbles/v2/viewport"
+	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 )
 
 type TaskProvider interface {
@@ -61,7 +61,7 @@ func NewTasksPanel(styles *styles.Styles, lang string, provider TaskProvider) *T
 	t.KeyMap.LineUp.SetKeys("up", "k")
 	t.KeyMap.LineDown.SetKeys("down", "j")
 
-	vp := viewport.New(0, 0)
+	vp := viewport.New()
 	vp.MouseWheelEnabled = true
 	vp.MouseWheelDelta = 3
 
@@ -176,8 +176,8 @@ func (p *TasksPanel) SetSize(width, height int) {
 	p.BasePanel.SetSize(width, height)
 	p.table.SetWidth(width - 6)
 	p.table.SetHeight(height - 10)
-	p.vp.Width = width - 6
-	p.vp.Height = height - 10
+	p.vp.SetWidth(width - 6)
+	p.vp.SetHeight(height - 10)
 }
 
 func (p *TasksPanel) IsViewing() bool { return p.viewing }

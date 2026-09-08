@@ -18,7 +18,7 @@ import (
 	"github.com/eosaios/eos/internal/i18n"
 	sidecarclient "github.com/eosaios/eos/pkg/coreapi/sidecar/client"
 
-	tea "github.com/charmbracelet/bubbletea"
+	tea "charm.land/bubbletea/v2"
 )
 
 // TUIOptions holds CLI-provided overrides for the interactive TUI
@@ -135,7 +135,7 @@ func StartInteractiveTUIWithOptions(opts TUIOptions) {
 		}
 	}
 	slog.Info("ui.startup.app.run")
-	if _, err := tea.NewProgram(m, tea.WithAltScreen(), tea.WithMouseCellMotion()).Run(); err != nil {
+	if _, err := tea.NewProgram(m).Run(); err != nil {
 		slog.Error("ui.startup.app.run.error", "error", err)
 		fmt.Fprintf(os.Stderr, "\nError: Application failed to start: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Please check the logs for more details.\n")

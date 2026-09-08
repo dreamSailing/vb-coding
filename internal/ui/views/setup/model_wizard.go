@@ -17,10 +17,10 @@ import (
 	"github.com/eosaios/eos/internal/ui/styles"
 	"github.com/eosaios/eos/pkg/coreapi"
 
-	"github.com/charmbracelet/bubbles/table"
-	"github.com/charmbracelet/bubbles/textinput"
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
+	"charm.land/bubbles/v2/table"
+	"charm.land/bubbles/v2/textinput"
+	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 )
 
 // ModelSetupStep 模型设置步骤
@@ -103,7 +103,7 @@ func NewModelSetupWizard(styles *styles.Styles, lang string) *ModelSetupView {
 	inputs := make([]textinput.Model, 4)
 	for i := range inputs {
 		inputs[i] = textinput.New()
-		inputs[i].Width = 50
+		inputs[i].SetWidth(50)
 	}
 	inputs[1].EchoMode = textinput.EchoPassword // API Key
 
@@ -256,7 +256,7 @@ func (v *ModelSetupView) SetSize(width, height int) {
 	v.modelTable.SetWidth(modelWidth)
 
 	for i := range v.inputs {
-		v.inputs[i].Width = width - 20
+		v.inputs[i].SetWidth(width - 20)
 	}
 }
 

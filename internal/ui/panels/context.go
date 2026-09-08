@@ -13,10 +13,10 @@ import (
 	"github.com/eosaios/eos/internal/i18n"
 	"github.com/eosaios/eos/internal/ui/styles"
 
-	"github.com/charmbracelet/bubbles/table"
-	"github.com/charmbracelet/bubbles/viewport"
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
+	"charm.land/bubbles/v2/table"
+	"charm.land/bubbles/v2/viewport"
+	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 	"github.com/mattn/go-runewidth"
 )
 
@@ -73,7 +73,7 @@ func NewContextPanel(styles *styles.Styles, lang string) *ContextPanel {
 	t.KeyMap.LineUp.SetKeys("up", "k")
 	t.KeyMap.LineDown.SetKeys("down", "j")
 
-	vp := viewport.New(0, 0)
+	vp := viewport.New()
 	vp.MouseWheelEnabled = true
 	vp.MouseWheelDelta = 3
 
@@ -422,8 +422,8 @@ func (p *ContextPanel) syncLayout() {
 
 	p.table.SetWidth(w)
 	p.table.SetHeight(tableHeight)
-	p.detail.Width = w
-	p.detail.Height = h
+	p.detail.SetWidth(w)
+	p.detail.SetHeight(h)
 	p.updateTableColumns()
 }
 

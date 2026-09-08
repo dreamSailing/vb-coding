@@ -13,8 +13,8 @@ import (
 	uinput "github.com/eosaios/eos/internal/ui/components/input"
 	"github.com/eosaios/eos/internal/ui/styles"
 
-	"github.com/charmbracelet/bubbles/viewport"
-	tea "github.com/charmbracelet/bubbletea"
+	"charm.land/bubbles/v2/viewport"
+	tea "charm.land/bubbletea/v2"
 )
 
 type RulesRefreshMsg struct{}
@@ -46,7 +46,7 @@ type RulesPanel struct {
 }
 
 func NewRulesPanel(styles *styles.Styles, lang string) *RulesPanel {
-	vp := viewport.New(0, 0)
+	vp := viewport.New()
 	vp.MouseWheelEnabled = true
 	vp.MouseWheelDelta = 3
 	ed := uinput.New()
@@ -247,8 +247,8 @@ func (p *RulesPanel) SetSize(width, height int) {
 	if h < 0 {
 		h = 0
 	}
-	p.view.Width = w
-	p.view.Height = h
+	p.view.SetWidth(w)
+	p.view.SetHeight(h)
 	p.editor.SetSize(w, h)
 	p.updateViewContent()
 }

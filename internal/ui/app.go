@@ -31,7 +31,7 @@ import (
 	"github.com/eosaios/eos/internal/ui/views/setup"
 	"github.com/eosaios/eos/internal/ui/views/shell"
 
-	tea "github.com/charmbracelet/bubbletea"
+	tea "charm.land/bubbletea/v2"
 )
 
 // AppState 应用程序状态
@@ -388,42 +388,52 @@ func (m *AppModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, m.finalizeUpdate(nil)
 }
 
-// View 渲染应用视图
-func (m *AppModel) View() string {
+// View 渲染应用视图。v2 下 AltScreen / 鼠标模式也在这里声明。
+func (m *AppModel) View() tea.View {
 	if m.width == 0 || m.height == 0 {
-		return "Loading..."
+		return tea.NewView("Loading...")
 	}
 
+	var content string
 	switch m.activeView {
 	case "shell":
 		view := m.shell.View()
 		if m.actionPopup != nil {
-			return overlayCenter(m.width, m.height, view, m.actionPopup.View())
+			content = overlayCenter(m.width, m.height, view, m.actionPopup.View())
+		} else {
+			content = view
 		}
-		return view
 	case "confirm":
 		if m.confirmView != nil {
-			return m.confirmView.View()
+			content = m.confirmView.View()
+		} else {
+			content = m.shell.View()
 		}
-		return m.shell.View()
 	case "help":
-		return m.helpView.View()
+		content = m.helpView.View()
 	case "setup":
 		switch sv := m.setupView.(type) {
 		case *setup.SetupView:
-			return sv.View()
+			content = sv.View()
 		case *setup.ModelSetupView:
-			return sv.View()
+			content = sv.View()
 		case *setup.MCPConfigEditorView:
-			return sv.View()
+			content = sv.View()
+		default:
+			content = "Loading..."
 		}
-		return "Loading..."
 	case "panel":
 		if panel, ok := m.panels[m.activePanel]; ok {
-			return panel.View()
+			content = panel.View()
+		} else {
+			content = m.styles.App.Render("Panel not found: " + m.activePanel)
 		}
-		return m.styles.App.Render("Panel not found: " + m.activePanel)
 	default:
-		return m.styles.App.Render("Welcome to EOS!")
+		content = m.styles.App.Render("Welcome to EOS!")
 	}
+
+	v := tea.NewView(content)
+	v.AltScreen = true
+	v.MouseMode = tea.MouseModeCellMotion
+	return v
 }

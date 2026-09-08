@@ -14,8 +14,8 @@ import (
 	"github.com/eosaios/eos/internal/ui/components/input"
 	"github.com/eosaios/eos/internal/ui/styles"
 
-	"github.com/charmbracelet/bubbles/viewport"
-	tea "github.com/charmbracelet/bubbletea"
+	"charm.land/bubbles/v2/viewport"
+	tea "charm.land/bubbletea/v2"
 )
 
 // MemoryRefreshMsg 请求刷新记忆快照。
@@ -66,7 +66,7 @@ type MemoryPanel struct {
 }
 
 func NewMemoryPanel(styles *styles.Styles, lang string) *MemoryPanel {
-	vp := viewport.New(0, 0)
+	vp := viewport.New()
 	vp.MouseWheelEnabled = true
 	vp.MouseWheelDelta = 3
 	ed := input.New()
@@ -310,8 +310,8 @@ func (p *MemoryPanel) SetSize(width, height int) {
 	if h < 0 {
 		h = 0
 	}
-	p.view.Width = w
-	p.view.Height = h
+	p.view.SetWidth(w)
+	p.view.SetHeight(h)
 	p.editor.SetSize(w, h)
 	p.updateViewContent()
 }

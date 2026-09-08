@@ -13,7 +13,7 @@ package ui
 import (
 	"context"
 
-	tea "github.com/charmbracelet/bubbletea"
+	tea "charm.land/bubbletea/v2"
 	"github.com/eosaios/eos/internal/config"
 	"github.com/eosaios/eos/internal/update"
 )

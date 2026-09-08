@@ -16,8 +16,8 @@ import (
 
 	"github.com/eosaios/eos/internal/i18n"
 
+	"charm.land/bubbletea/v2"
 	"github.com/atotto/clipboard"
-	"github.com/charmbracelet/bubbletea"
 	"github.com/mattn/go-runewidth"
 )
 
@@ -140,25 +140,28 @@ func (m *AppModel) handleContentSelection(msg tea.MouseMsg) bool {
 	ch := m.shell.ContentHeight()
 	yOff := m.shell.ContentYOffset()
 
-	inArea := msg.X >= ox && msg.Y >= oy && msg.Y < oy+ch
+	mo := msg.Mouse()
+
+	inArea := mo.X >= ox && mo.Y >= oy && mo.Y < oy+ch
 
 	toCoord := func() selectionCoord {
-		col := msg.X - ox
+		col := mo.X - ox
 		if col < 0 {
 			col = 0
 		}
 		if col >= cw-1 {
 			col = cw - 1 // 最后一列是滚动条，clamp 到其左侧
 		}
-		return selectionCoord{line: yOff + (msg.Y - oy), col: col}
+		return selectionCoord{line: yOff + (mo.Y - oy), col: col}
 	}
 
-	switch msg.Action {
-	case tea.MouseActionPress:
+	// v2：按具体鼠标事件类型分流；滚轮（MouseWheelMsg）不拦截，交给 viewport 滚动。
+	switch msg.(type) {
+	case tea.MouseClickMsg:
 		if !inArea {
 			return false
 		}
-		if msg.X-ox >= cw-1 {
+		if mo.X-ox >= cw-1 {
 			// 滚动条列：不框选，交给 viewport 处理拖动滚动。
 			return false
 		}
@@ -170,7 +173,7 @@ func (m *AppModel) handleContentSelection(msg tea.MouseMsg) bool {
 		m.shell.ClearSelectionHighlight()
 		return true
 
-	case tea.MouseActionMotion:
+	case tea.MouseMotionMsg:
 		if m.selAnchor == nil {
 			return false
 		}
@@ -182,7 +185,7 @@ func (m *AppModel) handleContentSelection(msg tea.MouseMsg) bool {
 		}
 		return true
 
-	case tea.MouseActionRelease:
+	case tea.MouseReleaseMsg:
 		if m.selAnchor == nil {
 			return false
 		}
@@ -190,7 +193,7 @@ func (m *AppModel) handleContentSelection(msg tea.MouseMsg) bool {
 		if !m.selActive {
 			// 无拖动的点击：保留原有「点击消息文本弹出复制/下载」。
 			m.shell.ClearSelectionHighlight()
-			m.tryHandleBubbleActionAt(msg.X, msg.Y)
+			m.tryHandleBubbleActionAt(mo.X, mo.Y)
 			return true
 		}
 		coord := toCoord()

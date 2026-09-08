@@ -11,9 +11,9 @@ import (
 
 	"github.com/eosaios/eos/internal/ui/styles"
 
-	"github.com/charmbracelet/bubbles/textinput"
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
+	"charm.land/bubbles/v2/textinput"
+	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 )
 
 // SetupStep 设置步骤
@@ -54,7 +54,7 @@ func NewSetupView(styles *styles.Styles) *SetupView {
 	inputs := make([]textinput.Model, 4)
 	for i := range inputs {
 		inputs[i] = textinput.New()
-		inputs[i].Width = 40
+		inputs[i].SetWidth(40)
 	}
 
 	// 设置输入框类型
@@ -97,7 +97,7 @@ func (v *SetupView) SetSize(width, height int) {
 	v.width = width
 	v.height = height
 	for i := range v.inputs {
-		v.inputs[i].Width = width - 20
+		v.inputs[i].SetWidth(width - 20)
 	}
 }
 

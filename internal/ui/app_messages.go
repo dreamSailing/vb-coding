@@ -24,7 +24,7 @@ import (
 	"github.com/eosaios/eos/internal/ui/components/messages"
 	"github.com/eosaios/eos/internal/ui/render"
 
-	tea "github.com/charmbracelet/bubbletea"
+	tea "charm.land/bubbletea/v2"
 )
 
 // ansiRe 匹配 ANSI 转义序列，用于清理文本中的终端样式代码

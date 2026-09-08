@@ -5,7 +5,7 @@ package styles
 // 本文件基于 EOS 非商用许可证 v1.1 发布，详见 LICENSE。
 // 商业使用请联系版权人获得商业授权。
 
-import "github.com/charmbracelet/lipgloss"
+import "charm.land/lipgloss/v2"
 
 // Styles 是应用程序中使用的所有样式的集合
 type Styles struct {

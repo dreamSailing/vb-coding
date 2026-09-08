@@ -12,9 +12,9 @@ import (
 	"github.com/eosaios/eos/internal/ui/features/slash"
 	"github.com/eosaios/eos/internal/ui/styles"
 
-	"github.com/charmbracelet/bubbles/viewport"
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
+	"charm.land/bubbles/v2/viewport"
+	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 )
 
 const (
@@ -35,7 +35,7 @@ type HelpView struct {
 
 // NewHelpView 创建新的帮助视图
 func NewHelpView(styles *styles.Styles, lang string) *HelpView {
-	vp := viewport.New(0, 0)
+	vp := viewport.New()
 	vp.MouseWheelEnabled = true
 	vp.MouseWheelDelta = 3
 	return &HelpView{
@@ -80,8 +80,8 @@ func (h *HelpView) relayout() {
 	if innerH < 5 {
 		innerH = 5
 	}
-	h.vp.Width = innerW
-	h.vp.Height = innerH
+	h.vp.SetWidth(innerW)
+	h.vp.SetHeight(innerH)
 }
 
 // Init 初始化

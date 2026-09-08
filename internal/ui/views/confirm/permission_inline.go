@@ -7,7 +7,7 @@ import (
 	"github.com/eosaios/eos/internal/ui/render"
 	"github.com/eosaios/eos/internal/ui/styles"
 
-	"github.com/charmbracelet/lipgloss"
+	"charm.land/lipgloss/v2"
 )
 
 // RenderInlinePermission renders a lightweight permission prompt intended to

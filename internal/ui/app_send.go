@@ -31,7 +31,7 @@ import (
 	"github.com/eosaios/eos/internal/ui/views/setup"
 	"github.com/eosaios/eos/internal/ui/views/shell"
 
-	tea "github.com/charmbracelet/bubbletea"
+	tea "charm.land/bubbletea/v2"
 )
 
 // predictionDebounceMsg 预测防抖消息，用于延迟触发下一条消息预测

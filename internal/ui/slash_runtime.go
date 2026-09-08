@@ -22,7 +22,7 @@ import (
 	"github.com/eosaios/eos/internal/ui/panels"
 	"github.com/eosaios/eos/pkg/coreapi"
 
-	tea "github.com/charmbracelet/bubbletea"
+	tea "charm.land/bubbletea/v2"
 )
 
 func (m *AppModel) localize(zh, en string) string {

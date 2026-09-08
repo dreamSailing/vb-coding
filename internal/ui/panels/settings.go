@@ -15,10 +15,10 @@ import (
 	"github.com/eosaios/eos/internal/pkg/settings"
 	"github.com/eosaios/eos/internal/ui/styles"
 
-	"github.com/charmbracelet/bubbles/table"
-	"github.com/charmbracelet/bubbles/textinput"
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
+	"charm.land/bubbles/v2/table"
+	"charm.land/bubbles/v2/textinput"
+	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 )
 
 // SettingsPanel 设置面板
@@ -94,8 +94,7 @@ func NewSettingsPanel(styles *styles.Styles, mgr *settings.Manager, lang string)
 
 	// 创建编辑输入框
 	input := textinput.New()
-	input.Width = 40
-
+	input.SetWidth(40)
 	panel := &SettingsPanel{
 		BasePanel:   NewBasePanel("settings"),
 		styles:      styles,
@@ -576,7 +575,7 @@ func (p *SettingsPanel) SetSize(width, height int) {
 	p.BasePanel.SetSize(width, height)
 	p.table.SetWidth(width - 4)
 	p.table.SetHeight(height - 12)
-	p.editInput.Width = width - 10
+	p.editInput.SetWidth(width - 10)
 }
 
 // SettingsSaveMsg 保存设置消息

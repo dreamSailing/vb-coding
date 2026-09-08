@@ -12,8 +12,8 @@ import (
 	uinput "github.com/eosaios/eos/internal/ui/components/input"
 	"github.com/eosaios/eos/internal/ui/styles"
 
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
+	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 )
 
 type MCPConfigEditorView struct {

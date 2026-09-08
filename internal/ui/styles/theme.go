@@ -6,33 +6,35 @@ package styles
 // 商业使用请联系版权人获得商业授权。
 
 import (
-	"github.com/charmbracelet/lipgloss"
+	"image/color"
+
+	"charm.land/lipgloss/v2"
 )
 
 // Theme 定义了应用程序的主题结构
 type Theme struct {
 	// 主色
-	Primary   lipgloss.Color
-	Secondary lipgloss.Color
-	Muted     lipgloss.Color
+	Primary   color.Color
+	Secondary color.Color
+	Muted     color.Color
 
 	// 背景色
-	Background lipgloss.Color
-	Surface    lipgloss.Color
-	SurfaceAlt lipgloss.Color
+	Background color.Color
+	Surface    color.Color
+	SurfaceAlt color.Color
 
 	// 强调色
-	Accent lipgloss.Color
+	Accent color.Color
 
 	// 状态颜色
-	Success lipgloss.Color
-	Error   lipgloss.Color
-	Warning lipgloss.Color
-	Info    lipgloss.Color
+	Success color.Color
+	Error   color.Color
+	Warning color.Color
+	Info    color.Color
 
 	// 文本颜色
-	Text      lipgloss.Color
-	TextMuted lipgloss.Color
+	Text      color.Color
+	TextMuted color.Color
 
 	// 边框样式
 	Border lipgloss.Border
@@ -43,10 +45,10 @@ type Theme struct {
 }
 
 func newTheme(
-	primary, secondary, muted lipgloss.Color,
-	background, surface, surfaceAlt lipgloss.Color,
-	accent, success, errColor, warning, info lipgloss.Color,
-	text, textMuted, tableHeaderBg, tableHeaderFg, tableCellBg, tableCellFg lipgloss.Color,
+	primary, secondary, muted color.Color,
+	background, surface, surfaceAlt color.Color,
+	accent, success, errColor, warning, info color.Color,
+	text, textMuted, tableHeaderBg, tableHeaderFg, tableCellBg, tableCellFg color.Color,
 ) *Theme {
 	return &Theme{
 		Primary:    primary,

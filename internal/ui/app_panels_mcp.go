@@ -24,7 +24,7 @@ import (
 	"github.com/eosaios/eos/internal/ui/views/setup"
 	"github.com/eosaios/eos/pkg/coreapi"
 
-	tea "github.com/charmbracelet/bubbletea"
+	tea "charm.land/bubbletea/v2"
 )
 
 // handleMCPToggle 切换 MCP 服务器的启用/禁用状态

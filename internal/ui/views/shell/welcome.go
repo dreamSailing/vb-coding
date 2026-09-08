@@ -17,8 +17,8 @@ import (
 	"github.com/eosaios/eos/internal/update"
 	"github.com/eosaios/eos/internal/version"
 
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
+	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 )
 
 // WelcomeCard 欢迎卡片组件

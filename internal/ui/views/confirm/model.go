@@ -12,9 +12,9 @@ import (
 	"github.com/eosaios/eos/internal/ui/render"
 	"github.com/eosaios/eos/internal/ui/styles"
 
-	"github.com/charmbracelet/bubbles/textinput"
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
+	"charm.land/bubbles/v2/textinput"
+	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 )
 
 type Request struct {
@@ -60,7 +60,7 @@ type Model struct {
 
 func New(styles *styles.Styles, lang, diffTheme string, req Request) *Model {
 	in := textinput.New()
-	in.Width = 60
+	in.SetWidth(60)
 	in.Placeholder = req.TextHint
 	in.Prompt = "> "
 	in.Focus()
@@ -89,12 +89,12 @@ func New(styles *styles.Styles, lang, diffTheme string, req Request) *Model {
 func (m *Model) SetSize(w, h int) {
 	m.width, m.height = w, h
 	if w > 10 {
-		m.input.Width = w - 10
-		if m.input.Width > 80 {
-			m.input.Width = 80
+		m.input.SetWidth(w - 10)
+		if m.input.Width() > 80 {
+			m.input.SetWidth(80)
 		}
-		if m.input.Width < 30 {
-			m.input.Width = 30
+		if m.input.Width() < 30 {
+			m.input.SetWidth(30)
 		}
 	}
 }

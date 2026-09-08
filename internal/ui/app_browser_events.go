@@ -10,7 +10,7 @@ import (
 
 	"github.com/eosaios/eos/internal/i18n"
 	"github.com/eosaios/eos/internal/ui/views/confirm"
-	tea "github.com/charmbracelet/bubbletea"
+	tea "charm.land/bubbletea/v2"
 )
 
 // browser_takeover 本地确认框 kind（与 bg_kill/workspace_trust 同模式：
