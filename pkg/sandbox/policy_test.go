@@ -69,7 +69,14 @@ func TestPolicyJSONOmitEmptyBehavior(t *testing.T) {
 
 func TestBackendStatusJSONRoundTripAllPlatforms(t *testing.T) {
 	for _, goos := range []string{"linux", "darwin", "windows"} {
-		status := DetectBackendForOS(goos)
+		status := BackendStatus{
+			GOOS:                    goos,
+			Backend:                 "bubblewrap",
+			Enforced:                true,
+			Degraded:                false,
+			Reason:                  "round-trip",
+			UnsupportedCapabilities: []string{"seccomp-filter"},
+		}
 		data, err := json.Marshal(status)
 		if err != nil {
 			t.Fatalf("marshal %s: %v", goos, err)
@@ -123,26 +130,6 @@ func TestBackendStatusZeroValueIsNotDegraded(t *testing.T) {
 	}
 }
 
-func TestBackendStatusAllPlatformsHaveConsistentStructure(t *testing.T) {
-	// 所有受支持平台返回的 BackendStatus 都应是非强制 + 降级（当前内核 OS 级
-	// 隔离尚未 wired），并带 reason。
-	for _, goos := range []string{"linux", "darwin", "windows"} {
-		status := DetectBackendForOS(goos)
-		if status.Enforced {
-			t.Fatalf("%s: Enforced should be false (OS isolation not wired)", goos)
-		}
-		if !status.Degraded {
-			t.Fatalf("%s: Degraded should be true", goos)
-		}
-		if strings.TrimSpace(status.Reason) == "" {
-			t.Fatalf("%s: Reason should be non-empty", goos)
-		}
-		if len(status.UnsupportedCapabilities) == 0 {
-			t.Fatalf("%s: should list unsupported capabilities", goos)
-		}
-	}
-}
-
 func TestNormalizeModeCoversAllVariants(t *testing.T) {
 	cases := map[string]Mode{
 		"read-only":          ModeReadOnly,
@@ -162,15 +149,5 @@ func TestNormalizeModeCoversAllVariants(t *testing.T) {
 		if got := NormalizeMode(input); got != want {
 			t.Fatalf("NormalizeMode(%q) = %q, want %q", input, got, want)
 		}
-	}
-}
-
-func TestUnsupportedOSReturnsNoneBackend(t *testing.T) {
-	status := DetectBackendForOS("plan9")
-	if status.Backend != "none" {
-		t.Fatalf("unsupported OS backend = %q, want none", status.Backend)
-	}
-	if !status.Degraded {
-		t.Fatal("unsupported OS should be degraded")
 	}
 }

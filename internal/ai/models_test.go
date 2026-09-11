@@ -34,27 +34,3 @@ func TestThinkingCapabilityString(t *testing.T) {
 		})
 	}
 }
-
-func TestParseThinkingCapability(t *testing.T) {
-	tests := []struct {
-		input string
-		want  ThinkingCapability
-	}{
-		{"low", ThinkingLow},
-		{"medium", ThinkingMedium},
-		{"high", ThinkingHigh},
-		{"none", ThinkingNone},
-		{"", ThinkingNone},
-		{"bogus", ThinkingNone},
-		{"HIGH", ThinkingHigh}, // 大小写不敏感
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.input, func(t *testing.T) {
-			got := ParseThinkingCapability(tt.input)
-			if got != tt.want {
-				t.Errorf("ParseThinkingCapability(%q) = %v, want %v", tt.input, got, tt.want)
-			}
-		})
-	}
-}

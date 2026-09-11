@@ -34,12 +34,9 @@ import (
 // 新调用点必须通过 sandbox.GuardedRunner 或在此显式分类。
 var allowedProcessExecCalls = map[string]int{
 	"internal/document/convert.go:convertWithSoffice:utils.Command":              1,
-	"internal/lsp/client.go:Start:utils.CommandContext":                          1,
-	"internal/lsp/detector.go:findPythonServer:utils.CommandContext":             1,
 	"internal/pkg/filedialog/filedialog_darwin.go:ChooseDirectory:exec.Command":  1,
 	"internal/pkg/filedialog/filedialog_linux.go:ChooseDirectory:exec.Command":   1,
 	"internal/pkg/filedialog/filedialog_windows.go:ChooseDirectory:exec.Command": 1,
-	"internal/pkg/plugins/external.go:Execute:utils.CommandContext":              1,
 	"internal/pkg/utils/command.go:Command:exec.Command":                         1,
 	"internal/pkg/utils/command.go:CommandContext:exec.CommandContext":           1,
 	"internal/ui/slash_runtime.go:copyToClipboard:exec.Command":                  3,

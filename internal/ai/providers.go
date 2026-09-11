@@ -131,55 +131,6 @@ func (pr *ProviderRegistry) replaceAll(providers []*ProviderConfig) {
 	}
 }
 
-// DetectProvider 根据 API Base URL 自动检测服务商
-func (pr *ProviderRegistry) DetectProvider(baseURL string) *ProviderConfig {
-	if baseURL == "" {
-		return nil
-	}
-	b := strings.ToLower(strings.TrimSpace(baseURL))
-
-	// 按当前运行时目录快照匹配
-	for _, p := range pr.ordered {
-		if p == nil || p.Type == ProviderCustom {
-			continue
-		}
-		if p.Type == ProviderMiniMax && (strings.Contains(b, "api.minimaxi.com") || strings.Contains(b, "api.minimax.io")) {
-			return p
-		}
-		if p.Type == ProviderMiMo && strings.Contains(b, "xiaomimimo.com") {
-			return p
-		}
-		defaultBase := strings.ToLower(p.DefaultAPIBase)
-		if defaultBase != "" && strings.Contains(b, extractDomain(defaultBase)) {
-			return p
-		}
-		if p.CodePlanAPIBase != "" {
-			codePlanBase := strings.ToLower(p.CodePlanAPIBase)
-			if strings.Contains(b, extractDomain(codePlanBase)) {
-				return p
-			}
-		}
-	}
-
-	return nil
-}
-
-// extractDomain 从 URL 中提取域名（用于匹配）
-func extractDomain(url string) string {
-	url = strings.TrimSpace(strings.ToLower(url))
-	url = strings.TrimPrefix(url, "https://")
-	url = strings.TrimPrefix(url, "http://")
-	url = strings.TrimPrefix(url, "ws://")
-	url = strings.TrimPrefix(url, "wss://")
-	if idx := strings.Index(url, "/"); idx >= 0 {
-		url = url[:idx]
-	}
-	if idx := strings.Index(url, ":"); idx >= 0 {
-		url = url[:idx]
-	}
-	return url
-}
-
 // globalRegistry 全局服务商注册表
 var globalRegistry = NewProviderRegistry()
 
@@ -196,11 +147,6 @@ func GetProviderByID(id string) *ProviderConfig {
 // GetAllProviders 获取所有服务商配置（使用全局注册表）
 func GetAllProviders() []*ProviderConfig {
 	return globalRegistry.GetAll()
-}
-
-// DetectProviderByBase 根据 API Base URL 自动检测服务商（使用全局注册表）
-func DetectProviderByBase(baseURL string) *ProviderConfig {
-	return globalRegistry.DetectProvider(baseURL)
 }
 
 // GetAPIBase 根据服务商和 API 类型返回正确的 Base URL
@@ -247,60 +193,3 @@ func GetAPIBase(provider ProviderType, apiType APIType, customBase string) strin
 	}
 }
 
-// GetCodePlanModelNames 返回当前目录快照中需要使用 Code Plan API 的模型列表。
-func GetCodePlanModelNames() []string {
-	result := make([]string, 0)
-	seen := make(map[string]struct{})
-	for _, entry := range globalCatalog.GetAll() {
-		if entry == nil || (entry.APIType != APITypeCodePlan && entry.APIType != APITypeTokenPlan && entry.APIType != APITypeTokenPlanClaude) {
-			continue
-		}
-		for _, key := range []string{entry.ID, entry.ModelName} {
-			key = strings.TrimSpace(key)
-			if key == "" {
-				continue
-			}
-			normalized := strings.ToLower(key)
-			if _, ok := seen[normalized]; ok {
-				continue
-			}
-			seen[normalized] = struct{}{}
-			result = append(result, key)
-		}
-	}
-	return result
-}
-
-// IsCodePlanModel 检查模型是否需要使用 Code Plan API。
-func IsCodePlanModel(modelName string) bool {
-	entry := findCatalogEntryByKey(strings.ToLower(strings.TrimSpace(modelName)))
-	return entry != nil && (entry.APIType == APITypeCodePlan || entry.APIType == APITypeTokenPlan || entry.APIType == APITypeTokenPlanClaude)
-}
-
-// ParseProviderType 从字符串解析服务商类型
-func ParseProviderType(s string) ProviderType {
-	switch strings.ToLower(strings.TrimSpace(s)) {
-	case "deepseek":
-		return ProviderDeepSeek
-	case "dashscope", "qwen", "aliyun", "alibaba":
-		return ProviderDashScope
-	case "bytedance", "volcengine", "volces", "doubao":
-		return ProviderByteDance
-	case "zhipu", "zhipuai", "glm", "chatglm":
-		return ProviderZhipu
-	case "moonshot", "kimi":
-		return ProviderMoonshot
-	case "minimax":
-		return ProviderMiniMax
-	case "mimo", "xiaomi", "xiaomimimo":
-		return ProviderMiMo
-	case "gemini", "google":
-		return ProviderGemini
-	case "openai":
-		return ProviderOpenAI
-	case "anthropic", "claude":
-		return ProviderAnthropic
-	default:
-		return ProviderCustom
-	}
-}

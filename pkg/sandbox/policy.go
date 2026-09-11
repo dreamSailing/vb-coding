@@ -10,7 +10,6 @@
 package sandbox
 
 import (
-	"runtime"
 	"strings"
 )
 
@@ -63,50 +62,3 @@ func NormalizeMode(mode string) Mode {
 	}
 }
 
-// DetectBackendForOS 返回给定 OS 的后端能力快照，用于壳层在不经内核往返时
-// 给出降级提示（例如初始化阶段）。最终裁决仍以内核 BackendStatus 为准。
-func DetectBackendForOS(goos string) BackendStatus {
-	switch goos {
-	case "linux":
-		return BackendStatus{
-			GOOS:                    goos,
-			Backend:                 "bubblewrap-or-landlock",
-			Enforced:                false,
-			Degraded:                true,
-			Reason:                  "backend probing not wired yet",
-			UnsupportedCapabilities: []string{"seccomp-filter", "namespace-isolation"},
-		}
-	case "darwin":
-		return BackendStatus{
-			GOOS:                    goos,
-			Backend:                 "seatbelt",
-			Enforced:                false,
-			Degraded:                true,
-			Reason:                  "backend probing not wired yet",
-			UnsupportedCapabilities: []string{"seatbelt-profile", "filesystem-tampering-detection"},
-		}
-	case "windows":
-		return BackendStatus{
-			GOOS:                    goos,
-			Backend:                 "path-broker",
-			Enforced:                false,
-			Degraded:                true,
-			Reason:                  "restricted token/job object backend not wired yet",
-			UnsupportedCapabilities: []string{"restricted-token", "job-object", "path-broker-enforcement"},
-		}
-	default:
-		return BackendStatus{
-			GOOS:                    goos,
-			Backend:                 "none",
-			Enforced:                false,
-			Degraded:                true,
-			Reason:                  "unsupported OS",
-			UnsupportedCapabilities: []string{"all-sandbox-capabilities"},
-		}
-	}
-}
-
-// DetectBackend 是 DetectBackendForOS 的便捷封装，按当前运行平台探测。
-func DetectBackend() BackendStatus {
-	return DetectBackendForOS(runtime.GOOS)
-}

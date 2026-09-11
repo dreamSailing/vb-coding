@@ -6,10 +6,6 @@ import (
 	"time"
 )
 
-func NewBridgeService(logFile, startupWorkspace string) *BridgeService {
-	return NewBridgeServiceWithOptions(defaultBridgeServiceOptions(logFile, startupWorkspace))
-}
-
 func newBridgeServiceWithDefaults(opts BridgeServiceOptions) *BridgeService {
 	service := &BridgeService{
 		runtimeGatewayMode:   bridgeRuntimeGatewayModeRust,

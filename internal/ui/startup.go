@@ -39,10 +39,6 @@ func T(key, lang string, args ...interface{}) string {
 	return i18n.T(key, lang, args...)
 }
 
-func StartInteractiveTUI() {
-	StartInteractiveTUIWithOptions(TUIOptions{})
-}
-
 // applyTUIStartupModel 启动期模型处理：
 //   - 自愈当前会话的无效 model_name 覆盖（历史桌面端写入的目录 label 会让
 //     会话每次对话 NotFound，这里归一化或清除）；

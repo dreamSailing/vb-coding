@@ -35,29 +35,9 @@ type CheckResult struct {
 	ReleaseURL  string `json:"releaseUrl,omitempty"`
 }
 
-func CheckLatest(ctx context.Context) (*CheckResult, error) {
-	return CheckLatestFor(ctx, runtime.GOOS, runtime.GOARCH)
-}
-
-// CheckLatestWithProxy 走显式代理地址检查更新（开关开启时的入口）；
-// 代理地址非法时 fail-fast 返回错误。
-func CheckLatestWithProxy(ctx context.Context, proxyURL string) (*CheckResult, error) {
-	client, err := NewHTTPClient(proxyURL)
-	if err != nil {
-		return nil, err
-	}
-	return CheckLatestWithClient(ctx, client)
-}
-
 // CheckLatestWithClient 用指定客户端检查更新（nil = 默认，遵循环境代理）。
 func CheckLatestWithClient(ctx context.Context, client *http.Client) (*CheckResult, error) {
 	return checkLatestFor(ctx, runtime.GOOS, runtime.GOARCH, client)
-}
-
-// CheckLatestFor 检查 goos/goarch 平台的最新版本。抽出来便于测试注入
-// 平台组合（当前机器无法覆盖全部目标平台）。
-func CheckLatestFor(ctx context.Context, goos, goarch string) (*CheckResult, error) {
-	return checkLatestFor(ctx, goos, goarch, nil)
 }
 
 func checkLatestFor(ctx context.Context, goos, goarch string, client *http.Client) (*CheckResult, error) {

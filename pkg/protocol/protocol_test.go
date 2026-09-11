@@ -7,7 +7,6 @@ package protocol
 
 import (
 	"encoding/json"
-	"strings"
 	"testing"
 	"time"
 )
@@ -16,7 +15,7 @@ func TestNewEventDefaults(t *testing.T) {
 	before := time.Now()
 	ev := NewEvent(EventTypeItemDelta, EventOptions{
 		RequestID: "req_123",
-		Payload:   TextPayloadMap(TextPayload{Text: "hello"}),
+		Payload:   map[string]any{"text": "hello"},
 	})
 	after := time.Now()
 
@@ -60,13 +59,13 @@ func TestEnvelopeJSONShape(t *testing.T) {
 		CorrelationID: "approval_01",
 		Timestamp:     ts,
 		Source:        SourceServe,
-		Payload: ApprovalRequestPayload(ApprovalRequest{
-			ApprovalID: "approval_01",
-			Title:      "执行确认",
-			Message:    "是否继续？",
-			RiskLevel:  "high",
-			Options:    []string{"allow_once", "deny"},
-		}),
+		Payload: map[string]any{
+			"approval_id": "approval_01",
+			"title":       "执行确认",
+			"message":     "是否继续？",
+			"risk_level":  "high",
+			"options":     []string{"allow_once", "deny"},
+		},
 	})
 
 	raw, err := json.Marshal(ev)
@@ -133,55 +132,5 @@ func TestRequestLifecycleEnvelopeCarriesStableFields(t *testing.T) {
 	}
 	if got := ev.Payload["status"]; got != "running" {
 		t.Fatalf("payload[status]=%v, want running", got)
-	}
-}
-
-func TestValidateEnvelopeAcceptsApprovalEvent(t *testing.T) {
-	ev := NewEvent(EventTypeApprovalReq, EventOptions{
-		RequestID: "approval_01",
-		Source:    SourceServe,
-		Payload: ApprovalRequestPayload(ApprovalRequest{
-			ApprovalID: "approval_01",
-			Message:    "continue?",
-		}),
-	})
-
-	if err := ValidateEnvelope(ev); err != nil {
-		t.Fatalf("ValidateEnvelope() error = %v", err)
-	}
-}
-
-func TestValidateEnvelopeRejectsMissingRequestID(t *testing.T) {
-	ev := NewEvent(EventTypeRequestDone, EventOptions{
-		Source: SourceCore,
-		Payload: map[string]any{
-			"status": "success",
-		},
-	})
-
-	err := ValidateEnvelope(ev)
-	if err == nil {
-		t.Fatal("ValidateEnvelope() error = nil, want request_id failure")
-	}
-	if !strings.Contains(err.Error(), "request_id") {
-		t.Fatalf("ValidateEnvelope() error = %v, want request_id mention", err)
-	}
-}
-
-func TestValidateEnvelopeRejectsMissingSessionPayload(t *testing.T) {
-	ev := NewEvent(EventTypeSessionUpdated, EventOptions{
-		SessionID: "sess_01",
-		Source:    SourceServe,
-		Payload: map[string]any{
-			"status": "idle",
-		},
-	})
-
-	err := ValidateEnvelope(ev)
-	if err == nil {
-		t.Fatal("ValidateEnvelope() error = nil, want session payload failure")
-	}
-	if !strings.Contains(err.Error(), "payload.session_id") {
-		t.Fatalf("ValidateEnvelope() error = %v, want payload.session_id mention", err)
 	}
 }

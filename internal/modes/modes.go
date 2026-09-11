@@ -198,12 +198,6 @@ func NormalizeSandboxMode(mode string) string {
 	return NormalizeAccessMode(mode)
 }
 
-// SandboxModeFromAccessMode 保留为兼容入口：沙箱轴与访问轴共用词表后即为恒等
-// 映射（规范值不变，历史 GUI 双值折叠到规范值）。
-func SandboxModeFromAccessMode(mode string) string {
-	return NormalizeAccessMode(mode)
-}
-
 func ResolveAccessMode(sess ExecSession) string {
 	if strings.TrimSpace(sess.AccessMode) != "" {
 		return NormalizeAccessMode(sess.AccessMode)
