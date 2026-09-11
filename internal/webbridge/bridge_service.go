@@ -179,6 +179,10 @@ func (s *BridgeService) PredictNextUserMessage(draft string) (string, error) {
 	return s.chatService().PredictNextUserMessage(draft)
 }
 
+func (s *BridgeService) RefineInput(draft string) (string, error) {
+	return s.chatService().RefineInput(draft)
+}
+
 func (s *BridgeService) ResolvePrompt(promptID, decision, note string) (BootstrapState, error) {
 	return s.commandService().ResolvePrompt(promptID, decision, note)
 }

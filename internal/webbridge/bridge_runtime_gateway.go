@@ -97,6 +97,7 @@ type bridgeRuntimeGateway interface {
 	CoreListRemoteWorkspacesRPC(context.Context) ([]adapter.RemoteWorkspace, error)
 	CoreCurrentRemoteRepoRPC(context.Context) (adapter.RemoteRepoState, bool, error)
 	CorePredictNextUserMessageRPC(context.Context, string) (string, error)
+	CoreRefineInputRPC(context.Context, string) (string, error)
 	CoreListMCPRPC(context.Context) ([]adapter.MCPServer, error)
 	CoreUpsertMCPRPC(context.Context, string, string, string, bool) error
 	CoreImportMCPJSONRPC(context.Context, string) error

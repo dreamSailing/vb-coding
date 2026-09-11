@@ -252,6 +252,7 @@ type GitService interface {
 
 type InsightService interface {
 	PredictNextUserMessage(context.Context, PredictNextUserMessageRequest) (string, error)
+	RefineInput(context.Context, RefineInputRequest) (string, error)
 	PlanSnapshot(context.Context) (PlanSnapshot, error)
 }
 
@@ -514,6 +515,10 @@ type RemoteWorkspaceRef struct {
 }
 
 type PredictNextUserMessageRequest struct {
+	Draft string `json:"draft,omitempty"`
+}
+
+type RefineInputRequest struct {
 	Draft string `json:"draft,omitempty"`
 }
 

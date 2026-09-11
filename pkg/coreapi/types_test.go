@@ -356,6 +356,9 @@ type compileTimeInsights struct{}
 func (compileTimeInsights) PredictNextUserMessage(context.Context, PredictNextUserMessageRequest) (string, error) {
 	return "", nil
 }
+func (compileTimeInsights) RefineInput(context.Context, RefineInputRequest) (string, error) {
+	return "", nil
+}
 func (compileTimeInsights) PlanSnapshot(context.Context) (PlanSnapshot, error) {
 	return PlanSnapshot{}, nil
 }

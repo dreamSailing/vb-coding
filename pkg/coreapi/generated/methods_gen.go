@@ -151,6 +151,7 @@ const (
 	MethodGitMergeAbort = "git/merge_abort"
 	MethodGitSuggestMessage = "git/suggest_message"
 	MethodInsightPredictNextUserMessage = "insight/predict_next_user_message"
+	MethodInsightRefineInput = "insight/refine_input"
 	MethodInsightPlanSnapshot = "insight/plan_snapshot"
 	MethodMemorySnapshot = "memory/snapshot"
 	MethodMemorySave = "memory/save"
@@ -337,6 +338,7 @@ func CoreMethods() []string {
 		MethodGitMergeAbort,
 		MethodGitSuggestMessage,
 		MethodInsightPredictNextUserMessage,
+		MethodInsightRefineInput,
 		MethodInsightPlanSnapshot,
 		MethodMemorySnapshot,
 		MethodMemorySave,
@@ -474,6 +476,7 @@ func MethodGroups() map[string][]string {
 		},
 		"insight": {
 			MethodInsightPredictNextUserMessage,
+			MethodInsightRefineInput,
 			MethodInsightPlanSnapshot,
 		},
 		"lsp": {

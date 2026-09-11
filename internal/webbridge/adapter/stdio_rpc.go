@@ -958,6 +958,16 @@ func (g *StdioGateway) PredictNextUserMessage(ctx context.Context, draft string)
 	return g.CorePredictNextUserMessageRPC(ctx, draft)
 }
 
+func (g *StdioGateway) CoreRefineInputRPC(ctx context.Context, draft string) (string, error) {
+	var out struct {
+		Text string `json:"text"`
+	}
+	if err := g.client.Call(ctx, protocoljsonrpc.MethodInsightRefineInput, coreapi.RefineInputRequest{Draft: draft}, &out); err != nil {
+		return "", err
+	}
+	return strings.TrimSpace(out.Text), nil
+}
+
 func (g *StdioGateway) CoreListMCPRPC(ctx context.Context) ([]MCPServer, error) {
 	var out []coreapi.MCPServer
 	if err := g.client.Call(ctx, protocoljsonrpc.MethodMCPList, nil, &out); err != nil {

@@ -249,3 +249,14 @@ func (svc *ChatService) PredictNextUserMessage(draft string) (string, error) {
 	defer cancel()
 	return s.predictNextUserMessageRPC(ctx, draft)
 }
+
+func (svc *ChatService) RefineInput(draft string) (string, error) {
+	s := svc.bridge
+	if s == nil {
+		return "", errors.New("bridge service is not available")
+	}
+	// 内核侧模型调用超时 20s，壳层留足余量。
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	return s.refineInputRPC(ctx, draft)
+}

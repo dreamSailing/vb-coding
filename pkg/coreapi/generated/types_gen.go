@@ -1370,6 +1370,10 @@ type PredictNextUserMessageRequest struct {
 	Draft string `json:"draft,omitempty"`
 }
 
+type RefineInputRequest struct {
+	Draft string `json:"draft,omitempty"`
+}
+
 type PlanSnapshot struct {
 	HasPlan bool `json:"has_plan"`
 	Content string `json:"content,omitempty"`

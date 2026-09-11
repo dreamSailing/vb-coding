@@ -1289,6 +1289,16 @@ func (s remoteInsightService) PredictNextUserMessage(ctx context.Context, req co
 	return out.Text, nil
 }
 
+func (s remoteInsightService) RefineInput(ctx context.Context, req coreapi.RefineInputRequest) (string, error) {
+	var out struct {
+		Text string `json:"text"`
+	}
+	if err := s.engine.call(ctx, protocoljsonrpc.MethodInsightRefineInput, req, &out); err != nil {
+		return "", err
+	}
+	return out.Text, nil
+}
+
 func (s remoteInsightService) PlanSnapshot(ctx context.Context) (coreapi.PlanSnapshot, error) {
 	var out coreapi.PlanSnapshot
 	if err := s.engine.call(ctx, protocoljsonrpc.MethodInsightPlanSnapshot, nil, &out); err != nil {

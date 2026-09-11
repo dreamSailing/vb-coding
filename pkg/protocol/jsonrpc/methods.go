@@ -142,6 +142,7 @@ const (
 	MethodGitMergeAbort              = "git/merge_abort"
 	MethodGitSuggestMessage          = "git/suggest_message"
 	MethodInsightPredictNextUser     = "insight/predict_next_user_message"
+	MethodInsightRefineInput         = "insight/refine_input"
 	MethodInsightPlanSnapshot        = "insight/plan_snapshot"
 	MethodMemorySnapshot             = "memory/snapshot"
 	MethodMemorySave                 = "memory/save"
@@ -340,6 +341,7 @@ func AllCoreMethods() []string {
 		MethodGitMergeAbort,
 		MethodGitSuggestMessage,
 		MethodInsightPredictNextUser,
+		MethodInsightRefineInput,
 		MethodInsightPlanSnapshot,
 		MethodMemorySnapshot,
 		MethodMemorySave,
