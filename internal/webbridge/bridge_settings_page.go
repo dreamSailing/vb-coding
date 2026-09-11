@@ -117,7 +117,7 @@ func (s *BridgeService) loadSettings(activeWorkspace string, workspaces []Worksp
 				GitCommitMarker:      true,
 				StayInTray:           true,
 				UseMemory:            true,
-				MaxInjectKB:          48,
+				MaxInjectKB:          32,
 				WatchDebounceMs:      500,
 				PollIntervalSec:      5,
 			},

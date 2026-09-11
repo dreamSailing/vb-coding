@@ -19,7 +19,7 @@ const (
 	defaultTheme              = "system"
 	defaultDiffTheme          = "github"
 	defaultSandboxMode        = "workspace-write"
-	defaultMaxInjectKB        = 48
+	defaultMaxInjectKB        = 32
 	defaultWatchDebounceMs    = 500
 	defaultPollIntervalSec    = 5
 	workspaceSettingsFileName = "settings.json"

@@ -162,7 +162,7 @@ func defaultPanelSettings() *settings.Settings {
 	return &settings.Settings{
 		AutoContext:          true,
 		DesktopNotifications: &tn,
-		MaxInjectKB:          48,
+		MaxInjectKB:          32,
 		WatchDebounceMs:      500,
 		PollIntervalSec:      5,
 		Language:             "zh",

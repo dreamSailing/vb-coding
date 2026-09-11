@@ -1982,7 +1982,7 @@ func settingsFromCoreAPI(s coreapi.Settings) settings.Settings {
 		out.PlanPromptStyle = "concise"
 	}
 	if out.MaxInjectKB <= 0 {
-		out.MaxInjectKB = 48
+		out.MaxInjectKB = 32
 	}
 	if out.WatchDebounceMs <= 0 {
 		out.WatchDebounceMs = 500
