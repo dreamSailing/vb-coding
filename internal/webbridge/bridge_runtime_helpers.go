@@ -245,9 +245,6 @@ func cloneMessages(messages []ChatMessage) []ChatMessage {
 		out[index].Attachments = nonNilSlice(append([]AttachmentRef(nil), out[index].Attachments...))
 		out[index].RuntimeEvents = nonNilSlice(append([]RuntimeEvent(nil), out[index].RuntimeEvents...))
 		out[index].Prompts = nonNilSlice(append([]PromptCard(nil), out[index].Prompts...))
-		for promptIndex := range out[index].Prompts {
-			out[index].Prompts[promptIndex].Options = nonNilSlice(append([]string(nil), out[index].Prompts[promptIndex].Options...))
-		}
 		if out[index].ChangeSet != nil {
 			clone := *out[index].ChangeSet
 			clone.Files = nonNilSlice(append([]ChangedFile(nil), out[index].ChangeSet.Files...))

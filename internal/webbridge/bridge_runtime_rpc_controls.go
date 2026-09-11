@@ -78,28 +78,23 @@ func (s *BridgeService) respondApprovalDecisionRPC(approvalID string, decision c
 	})
 }
 
-// approvalDecisionFromPrompt maps the free-form prompt option text chosen by
-// the user to a typed ApprovalDecision. The desktop prompt UI renders option
-// strings dynamically, so this is the single place that interprets them.
-//
-// Mapping (kept aligned with the previous !EqualFold(decision,"deny") default):
-//   - "deny" / "decline" / "reject" / "no"          -> ApprovalDecline
-//   - "cancel" / "abort"                            -> ApprovalCancel
-//   - anything else (including "approve"/"accept")  -> ApprovalAccept
-//
-// "acceptForSession" is not produced here because the prompt UI does not yet
-// expose that option; it will be reachable once the prompt cards carry an
-// explicit decision token instead of free text (tracked under P0-1).
-func approvalDecisionFromPrompt(decision string) coreapi.ApprovalDecision {
-	switch strings.ToLower(strings.TrimSpace(decision)) {
-	case "deny", "decline", "reject", "no", "拒绝", "驳回", "不允许":
-		return coreapi.ApprovalDecline
-	case "cancel", "abort", "取消":
-		return coreapi.ApprovalCancel
-	case "allow", "approve", "accept", "yes", "允许", "同意", "批准":
-		return coreapi.ApprovalAccept
+// approvalDecisionFromToken maps the canonical decision token (echoed by the
+// frontend from the option's `token` field) to the typed ApprovalDecision.
+// Token values ARE the coreapi.ApprovalDecision wire values, so this is a
+// validated cast, not a translation: unknown tokens are rejected fail-fast
+// instead of silently reinterpreted (AGENTS.md 原则 1).
+func approvalDecisionFromToken(token string) (coreapi.ApprovalDecision, error) {
+	switch coreapi.ApprovalDecision(strings.TrimSpace(token)) {
+	case coreapi.ApprovalAccept:
+		return coreapi.ApprovalAccept, nil
+	case coreapi.ApprovalAcceptForSession:
+		return coreapi.ApprovalAcceptForSession, nil
+	case coreapi.ApprovalDecline:
+		return coreapi.ApprovalDecline, nil
+	case coreapi.ApprovalCancel:
+		return coreapi.ApprovalCancel, nil
 	default:
-		return coreapi.ApprovalAccept
+		return "", fmt.Errorf("unknown approval decision token: %q", token)
 	}
 }
 
@@ -143,7 +138,10 @@ func (s *BridgeService) respondPromptRPC(prompt *promptState, decision, note str
 		}
 		return nil
 	}
-	approvalDecision := approvalDecisionFromPrompt(decision)
+	approvalDecision, err := approvalDecisionFromToken(decision)
+	if err != nil {
+		return err
+	}
 	if err := gateway.CoreRespondApprovalRPC(coreCtx(), promptID, approvalDecision); err != nil {
 		return fmt.Errorf("respond approval: %w", err)
 	}

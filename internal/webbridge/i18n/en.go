@@ -22,16 +22,16 @@ var enText = map[string]string{
 	"error.terminal.workspace_path_required":          "workspace path is required",
 	"error.system.external_app_unknown":               "unknown external app",
 	"error.system.external_app_unavailable":           "this app is not installed on this machine",
-	// Approval card UI strings (fallbacks + localized button labels).
+	// Approval card UI strings (fallbacks; button labels moved to the frontend
+	// i18n — the option set is derived per kind on the frontend side).
 	"approval.card.title":                       "Approval required",
 	"approval.card.message_default":             "A high-risk operation was detected and needs confirmation.",
-	"approval.card.button_allow":                "Allow",
-	"approval.card.button_deny":                 "Deny",
 	"approval.notification.title":               "Approval requested",
 	"approval.notification.message_default":     "Waiting for confirmation",
 	"approval.runtime_event.detail":             "An operation requiring user confirmation was detected.",
 	"approval.message_status.text":              "Waiting for confirmation…",
 	"approval.resolved.allowed":                 "Allowed",
+	"approval.resolved.allowed_session":         "Allowed (don't ask again this session)",
 	"approval.resolved.denied":                  "Denied",
 	"approval.resolved.cancelled":               "Cancelled",
 	"approval.resolved.default":                 "Acknowledged",

@@ -58,7 +58,6 @@ func normalizeBootstrapState(state BootstrapState) BootstrapState {
 		state.Messages[index].RuntimeEvents = nonNilSlice(state.Messages[index].RuntimeEvents)
 		state.Messages[index].Prompts = nonNilSlice(state.Messages[index].Prompts)
 		for promptIndex := range state.Messages[index].Prompts {
-			state.Messages[index].Prompts[promptIndex].Options = nonNilSlice(state.Messages[index].Prompts[promptIndex].Options)
 			if strings.TrimSpace(state.Messages[index].Prompts[promptIndex].Status) == "" {
 				state.Messages[index].Prompts[promptIndex].Status = "pending"
 			}
@@ -74,7 +73,6 @@ func normalizeBootstrapState(state BootstrapState) BootstrapState {
 		}
 	}
 	for index := range state.Prompts {
-		state.Prompts[index].Options = nonNilSlice(state.Prompts[index].Options)
 		if strings.TrimSpace(state.Prompts[index].Status) == "" {
 			state.Prompts[index].Status = "pending"
 		}

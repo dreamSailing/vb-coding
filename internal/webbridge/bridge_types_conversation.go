@@ -94,8 +94,10 @@ type ItemApprovalState struct {
 	Title string `json:"title,omitempty"`
 	// Message 审批卡片正文（来自内核 risk preview reason 或问题文本）。
 	Message string `json:"message,omitempty"`
-	// Options 审批按钮文案（壳层 i18n：允许/拒绝 等）。
-	Options []string `json:"options,omitempty"`
+	// 审批卡按钮不在此携带：选项集是 kind 的纯函数（approval → accept/
+	// acceptForSession/decline 三枚 token），由前端按 kind 派生并本地化，
+	// 决策回传 token（= coreapi.ApprovalDecision wire 值）。壳层不落盘、
+	// 不透传展示文案（AGENTS.md §3：渲染归前端，裁决归内核）。
 	// RiskLevel 内核风险分类（low/medium/high），来自 tool.approval_required 内联 preview。
 	RiskLevel string `json:"riskLevel,omitempty"`
 	// Reason 内核给出的风险原因（preview.reason）。
@@ -242,12 +244,11 @@ type RollbackFileSnapshot struct {
 }
 
 type PromptCard struct {
-	ID                 string   `json:"id"`
-	Kind               string   `json:"kind"`
-	Title              string   `json:"title"`
-	Message            string   `json:"message"`
-	Options            []string `json:"options"`
-	AllowText          bool     `json:"allowText"`
+	ID                 string `json:"id"`
+	Kind               string `json:"kind"`
+	Title              string `json:"title"`
+	Message            string `json:"message"`
+	AllowText          bool   `json:"allowText"`
 	SessionID          string   `json:"sessionId"`
 	AssistantMessageID string   `json:"assistantMessageId"`
 	WorkspacePath      string   `json:"workspacePath"`

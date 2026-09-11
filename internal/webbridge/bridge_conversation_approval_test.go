@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/eosaios/eos/internal/webbridge/adapter"
-	"github.com/eosaios/eos/internal/webbridge/i18n"
+	"github.com/eosaios/eos/pkg/coreapi"
 )
 
 func TestIsApprovalPromptKind(t *testing.T) {
@@ -23,32 +23,30 @@ func TestIsApprovalPromptKind(t *testing.T) {
 	}
 }
 
-func TestApprovalPromptOptionsFallsBackToDefaultButtons(t *testing.T) {
-	// approvalPromptOptions 现在是 BridgeService 方法，默认按钮走 i18n。
-	// 直接验证 i18n key 在 zh/en 下的值（避免构造完整 BridgeService）。
-	zhAllow := i18n.T("approval.card.button_allow", "zh")
-	zhDeny := i18n.T("approval.card.button_deny", "zh")
-	if zhAllow != "允许" {
-		t.Fatalf("zh allow button: got %q want 允许", zhAllow)
+func TestApprovalDecisionFromToken(t *testing.T) {
+	// token 即 coreapi.ApprovalDecision wire 值：acceptForSession 是 web 前端
+	// "本次会话不再询问"按钮的回传值，直达内核 SessionApprovalCache。
+	cases := map[string]coreapi.ApprovalDecision{
+		"accept":           coreapi.ApprovalAccept,
+		"acceptForSession": coreapi.ApprovalAcceptForSession,
+		"decline":          coreapi.ApprovalDecline,
+		"cancel":           coreapi.ApprovalCancel,
 	}
-	if zhDeny != "拒绝" {
-		t.Fatalf("zh deny button: got %q want 拒绝", zhDeny)
+	for token, want := range cases {
+		got, err := approvalDecisionFromToken(token)
+		if err != nil {
+			t.Fatalf("approvalDecisionFromToken(%q) unexpected error: %v", token, err)
+		}
+		if got != want {
+			t.Fatalf("approvalDecisionFromToken(%q) = %q, want %q", token, got, want)
+		}
 	}
-	enAllow := i18n.T("approval.card.button_allow", "en")
-	if enAllow != "Allow" {
-		t.Fatalf("en allow button: got %q want Allow", enAllow)
+	// 未知 token 必须报错（fail-fast），不得静默重解释为 accept。
+	if _, err := approvalDecisionFromToken("允许"); err == nil {
+		t.Fatal("approvalDecisionFromToken(允许) must fail: localized labels are not tokens")
 	}
-}
-
-func TestApprovalDecisionFromPromptSupportsChineseOptions(t *testing.T) {
-	if got := approvalDecisionFromPrompt("允许"); got != "accept" {
-		t.Fatalf("approvalDecisionFromPrompt(允许) = %q, want %q", got, "accept")
-	}
-	if got := approvalDecisionFromPrompt("拒绝"); got != "decline" {
-		t.Fatalf("approvalDecisionFromPrompt(拒绝) = %q, want %q", got, "decline")
-	}
-	if got := approvalDecisionFromPrompt("取消"); got != "cancel" {
-		t.Fatalf("approvalDecisionFromPrompt(取消) = %q, want %q", got, "cancel")
+	if _, err := approvalDecisionFromToken("bogus"); err == nil {
+		t.Fatal("approvalDecisionFromToken(bogus) must fail")
 	}
 }
 

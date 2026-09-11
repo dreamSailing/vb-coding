@@ -24,17 +24,16 @@ var zhText = map[string]string{
 	"error.system.external_app_unavailable":           "该应用未在本机安装",
 	// Approval card UI strings. The kernel (tool.approval_required event) now
 	// inlines an ApprovalPreviewResponse with a risk reason; these are only the
-	// fallbacks when the kernel provided no reason, plus the localized button
-	// labels (button text is a shell i18n concern, not a kernel decision).
+	// fallbacks when the kernel provided no reason. 按钮文案已迁至前端 i18n
+	// （选项集由前端按 kind 派生，见 ItemApprovalState 注释）。
 	"approval.card.title":                       "审批确认",
 	"approval.card.message_default":             "检测到高风险操作，需要先确认。",
-	"approval.card.button_allow":                "允许",
-	"approval.card.button_deny":                 "拒绝",
 	"approval.notification.title":               "出现审批请求",
 	"approval.notification.message_default":     "等待确认",
 	"approval.runtime_event.detail":             "检测到需要用户确认的操作。",
 	"approval.message_status.text":              "等待确认…",
 	"approval.resolved.allowed":                 "已允许",
+	"approval.resolved.allowed_session":         "已允许（本次会话不再询问）",
 	"approval.resolved.denied":                  "已拒绝",
 	"approval.resolved.cancelled":               "已取消",
 	"approval.resolved.default":                 "已确认",

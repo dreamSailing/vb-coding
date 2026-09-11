@@ -8,6 +8,8 @@ import (
 	"fmt"
 	"log/slog"
 	"strings"
+
+	"github.com/eosaios/eos/pkg/coreapi"
 )
 
 type CommandService struct {
@@ -114,20 +116,22 @@ func (svc *CommandService) KillTask(taskID string) (BootstrapState, error) {
 	return s.LoadBootstrap(), nil
 }
 
-// resolvedStatusTextAndLevel 把用户决策文案映射为消息流状态行的显示文本与级别。
-// 这是 UI 展示层 i18n 职责（不是业务裁决）：中英文决策词归类成 allow/deny/cancel
-// 三态，文案走 i18n key。允许/同意类用 success（绿色），拒绝/取消类用 warning
-// （橙色），未知决策退化为 info（蓝色）。AGENTS.md L109：用户可见文案用 i18n key。
+// resolvedStatusTextAndLevel 把用户决策 token 映射为消息流状态行的显示文本与级别。
+// decision 是前端回传的 canonical token（= coreapi.ApprovalDecision wire 值），
+// 与 approvalDecisionFromToken 的校验集合一致。允许类用 success（绿色），
+// 拒绝/取消类用 warning（橙色）。AGENTS.md L109：用户可见文案用 i18n key。
 func (s *BridgeService) resolvedStatusTextAndLevel(prompt *promptState, decision string) (string, string) {
 	if prompt != nil && prompt.Source == "request-user-input" {
 		return s.t("request_user_input.resolved.answered"), "info"
 	}
-	switch strings.ToLower(strings.TrimSpace(decision)) {
-	case "allow", "approve", "accept", "yes", "允许", "同意", "批准":
+	switch coreapi.ApprovalDecision(strings.TrimSpace(decision)) {
+	case coreapi.ApprovalAccept:
 		return s.t("approval.resolved.allowed"), "success"
-	case "deny", "decline", "reject", "no", "拒绝", "驳回", "不允许":
+	case coreapi.ApprovalAcceptForSession:
+		return s.t("approval.resolved.allowed_session"), "success"
+	case coreapi.ApprovalDecline:
 		return s.t("approval.resolved.denied"), "warning"
-	case "cancel", "abort", "取消":
+	case coreapi.ApprovalCancel:
 		return s.t("approval.resolved.cancelled"), "warning"
 	default:
 		return s.t("approval.resolved.default"), "info"

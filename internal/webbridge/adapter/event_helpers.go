@@ -97,10 +97,6 @@ func (e Event) EffectiveMessage() string {
 	return eventMessageFromPayload(e.Kind(), e.payloadMap())
 }
 
-func (e Event) PromptOptions() []string {
-	return stringSliceValue(e.payloadMap(), "options")
-}
-
 func (e Event) payloadMap() map[string]any {
 	if len(e.Payload) > 0 {
 		return e.Payload
@@ -324,36 +320,4 @@ func nestedItemResultString(payload map[string]any, keys ...string) string {
 		return ""
 	}
 	return stringValue(result, keys...)
-}
-
-func stringSliceValue(payload map[string]any, key string) []string {
-	if payload == nil {
-		return nil
-	}
-	raw, ok := payload[key]
-	if !ok {
-		return nil
-	}
-	switch values := raw.(type) {
-	case []string:
-		out := make([]string, len(values))
-		copy(out, values)
-		return out
-	case []interface{}:
-		out := make([]string, 0, len(values))
-		for _, item := range values {
-			text, ok := item.(string)
-			if !ok {
-				continue
-			}
-			text = strings.TrimSpace(text)
-			if text == "" {
-				continue
-			}
-			out = append(out, text)
-		}
-		return out
-	default:
-		return nil
-	}
 }

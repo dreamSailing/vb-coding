@@ -204,3 +204,22 @@ func TestResolvedStatusTextAndLevelForRequestUserInput(t *testing.T) {
 		t.Fatalf("resolvedStatusTextAndLevel(request_user_input) = (%q, %q), want (已回答计划问题, info)", text, level)
 	}
 }
+
+func TestResolvedStatusTextAndLevelForDecisionTokens(t *testing.T) {
+	s := &BridgeService{}
+	cases := map[string]struct {
+		text  string
+		level string
+	}{
+		"accept":           {"已允许", "success"},
+		"acceptForSession": {"已允许（本次会话不再询问）", "success"},
+		"decline":          {"已拒绝", "warning"},
+		"cancel":           {"已取消", "warning"},
+	}
+	for token, want := range cases {
+		text, level := s.resolvedStatusTextAndLevel(nil, token)
+		if text != want.text || level != want.level {
+			t.Fatalf("resolvedStatusTextAndLevel(%q) = (%q, %q), want (%q, %q)", token, text, level, want.text, want.level)
+		}
+	}
+}

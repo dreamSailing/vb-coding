@@ -105,17 +105,6 @@ func isApprovalPromptKind(kind string) bool {
 	}
 }
 
-// approvalPromptOptions returns the event's prompt options, falling back to
-// localized Allow/Deny labels when the kernel provided none. Button text is a
-// shell i18n concern (not a kernel decision), so the fallback lives here.
-func (s *BridgeService) approvalPromptOptions(event adapter.Event) []string {
-	options := event.PromptOptions()
-	if len(options) > 0 {
-		return options
-	}
-	return []string{s.t("approval.card.button_allow"), s.t("approval.card.button_deny")}
-}
-
 // approvalIDFromEvent 从 approval 相关事件的 payload 中读取 approval_id。
 // tool.approval_required 事件的 RequestID 是 tool_call_id，而内核 pending 表用 approval_id
 // 做 key；如果用 EffectiveRequestID() 会拿到错误的 id，导致 respond approval 时找不到 entry。
@@ -198,13 +187,13 @@ func (s *BridgeService) handleConversationApprovalLocked(frame conversationEvent
 	level, previewReason := approvalPreviewFromEvent(frame.event)
 	message := firstNonEmptyString(previewReason, frame.message, s.t("approval.card.message_default"))
 	// 单一数据源：审批态挂到 ToolCall item 上（call.id = envelope.request_id）。
+	// 按钮选项不在壳层携带：前端按 kind 派生 token+label（见 ItemApprovalState 注释）。
 	approval := &ItemApprovalState{
 		ApprovalID: promptID,
 		Kind:       "approval",
 		State:      "pending",
 		Title:      s.t("approval.card.title"),
 		Message:    message,
-		Options:    s.approvalPromptOptions(frame.event),
 		RiskLevel:  level,
 		Reason:     previewReason,
 		DiffPath:   review.Path,
@@ -220,7 +209,6 @@ func (s *BridgeService) handleConversationApprovalLocked(frame conversationEvent
 			Kind:               "approval",
 			Title:              approval.Title,
 			Message:            message,
-			Options:            approval.Options,
 			RiskLevel:          level,
 			SessionID:          frame.sessionID,
 			AssistantMessageID: frame.assistantMessageID,

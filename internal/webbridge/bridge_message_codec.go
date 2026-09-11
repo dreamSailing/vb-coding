@@ -194,9 +194,8 @@ func populateApprovalFromMetadata(item *ThreadItem, raw any) {
 		DiffPath:   metadataString(obj["diffPath"]),
 		ResolvedAt: metadataString(obj["resolvedAt"]),
 	}
-	if opts, ok := obj["options"].([]any); ok {
-		approval.Options = stringSliceFromAny(opts)
-	}
+	// 按钮选项不落盘也不从 metadata 恢复：前端按 kind 派生（见 ItemApprovalState
+	// 注释），旧数据里的 options 数组（无论字符串还是对象形态）一律忽略。
 	if qs, ok := obj["questions"].([]any); ok {
 		approval.Questions = requestUserInputQuestionsFromAny(qs)
 	}
@@ -375,17 +374,6 @@ func buildItemMetadata(ti ThreadItem, turnID string, guiMeta map[string]any) map
 		meta[guiRuntimeMetadataKey] = guiMeta[guiRuntimeMetadataKey]
 	}
 	return meta
-}
-
-// stringSliceFromAny 把持久化读回的 []any 转成 []string（metadata 反序列化用）。
-func stringSliceFromAny(raw []any) []string {
-	out := make([]string, 0, len(raw))
-	for _, item := range raw {
-		if s, ok := item.(string); ok {
-			out = append(out, s)
-		}
-	}
-	return out
 }
 
 // requestUserInputQuestionsFromAny 把持久化读回的 []any 重建为 question 列表。
