@@ -82,7 +82,7 @@ type Styles struct {
 	MsgToolSuccess lipgloss.Style
 	MsgToolError   lipgloss.Style
 
-	// 文本流工具调用样式（对齐 codex 的 bullet + 状态标题 + 缩进输出）
+	// 文本流工具调用样式（bullet + 状态标题 + 缩进输出）
 	StreamToolName     lipgloss.Style // 工具名（accent 加粗）
 	StreamToolRunning  lipgloss.Style // running 态圆点
 	StreamToolSuccess  lipgloss.Style // success 圆点/时长

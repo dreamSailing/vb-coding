@@ -7,7 +7,7 @@ package messages
 
 // stream.go 提供文本流布局的渲染工具。
 //
-// 文本流布局参考 codex TUI（history_cell/messages.rs）：无边框、无背景填充、
+// 文本流布局：无边框、无背景填充、
 // 无右对齐，仅以首行前缀 + 续行缩进表达一条消息，消息之间以空行分隔。
 // 这比圆角气泡更贴合 CLI 的从上至下文本流视觉。
 
@@ -25,7 +25,7 @@ const (
 )
 
 // prefixLines 给逻辑行的每一行加上首行/续行前缀。
-// 对齐 codex 的 prefix_lines：第一行用 first，其余行用 rest。
+// 第一行用 first，其余行用 rest。
 func prefixLines(lines []string, first, rest string) []string {
 	if len(lines) == 0 {
 		return lines
@@ -179,7 +179,7 @@ type toolDetailBlock struct {
 	kind  string // "command", "path", "pattern", "meta"
 }
 
-// renderToolStream 渲染工具调用文本流，对齐 codex 的 exec/tool cell 视觉：
+// renderToolStream 渲染工具调用文本流（bullet + 状态标题 + 缩进输出的视觉）：
 //
 //	首行：状态圆点 + 工具名(加粗) + 调用摘要(inline)，running 时附 spinner 文案
 //	明细：参数键值缩进于 "  └ " 树前缀下

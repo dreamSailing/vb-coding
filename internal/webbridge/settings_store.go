@@ -406,8 +406,8 @@ func loadJSONInt(doc map[string]json.RawMessage, key string, fallback int) int {
 
 // NormalizeSandboxMode maps user-facing sandbox mode aliases to the canonical
 // wire value. The canonical vocabulary is the kernel SandboxMode kebab-case
-// enum ("read-only" / "workspace-write" / "danger-full-access", 对标 Codex
-// sandbox_mode)；历史 GUI 值（workspace / full_access）与中文别名只作为读取侧
+// enum ("read-only" / "workspace-write" / "danger-full-access")；历史 GUI 值
+//（workspace / full_access）与中文别名只作为读取侧
 // 别名。Shared by the desktop bridge layer (package main) and the settings
 // store to avoid duplicate copies.
 func NormalizeSandboxMode(mode string) string {

@@ -929,7 +929,7 @@ func (m Model) renderStatusBar() string {
 		rightParts = append(rightParts, m.styles.TextMuted.Render(i18n.T("status.tasks", m.language)+fmt.Sprintf("%d", m.bgTaskCount)))
 	}
 	if m.mode == ModeAI {
-		// 当前工作区所在 git 仓库分支（对齐 Codex 状态栏 git-branch 项：非 git
+		// 当前工作区所在 git 仓库分支（非 git
 		// 工作区 / 查询失败时省略，不显示错误）。
 		if m.gitBranch != "" {
 			gitItem := "⎇ " + m.gitBranch
@@ -980,8 +980,7 @@ func (m Model) renderStatusBar() string {
 			leftParts = append(leftParts, m.styles.TextInfo.Render(i18n.T("status.thinking_active", m.language)+animatedDots(m.statusAnim)))
 		} else {
 			// Idle: show a distinct "ready" badge so the user can tell the
-			// turn finished (mirrors codex flipping to "Ready" on turn
-			// complete), followed by the thinking-toggle state.
+			// turn finished, followed by the thinking-toggle state.
 			leftParts = append(leftParts, m.styles.TextSuccess.Render(i18n.T("status.ready", m.language)))
 			thinkingLabel := i18n.T("status.thinking", m.language)
 			if !state.Thinking() {

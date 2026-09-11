@@ -239,7 +239,7 @@ func (a *CoreClientAdapter) Invoke(ctx context.Context, query, executionMode str
 		}
 		slog.Debug("core.turn.start", "use_memory", useMemory, "source", "cli")
 		// Map the global execution_mode ("plan") to the per-turn
-		// collaboration_mode, mirroring Codex's turn/start.collaborationMode.
+		// collaboration_mode carried on turn/start.
 		if strings.TrimSpace(strings.ToLower(executionMode)) == "plan" {
 			req.CollaborationMode = &coreapi.CollaborationMode{Mode: coreapi.ModePlan}
 		}

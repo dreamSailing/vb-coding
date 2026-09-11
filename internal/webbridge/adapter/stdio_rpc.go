@@ -1707,7 +1707,7 @@ func (g *StdioGateway) coreStartTurnStreamRPC(ctx context.Context, req coreapi.S
 }
 
 // CoreResumeTurnStreamRPC 是 turn/resume 的流式入口：bridge 预生成 turnID 供
-// 事件订阅过滤；内核不追加用户消息，按已提交历史续跑失败 turn（codex resume
+// 事件订阅过滤；内核不追加用户消息，按已提交历史续跑失败 turn（resume
 // 语义）。
 func (g *StdioGateway) CoreResumeTurnStreamRPC(ctx context.Context, sessionID, turnID string) (<-chan Event, coreapi.Turn, error) {
 	if g == nil || g.client == nil {

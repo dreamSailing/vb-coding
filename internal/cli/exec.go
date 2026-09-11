@@ -80,8 +80,8 @@ func newExecCmd() *cobra.Command {
 	return cmd
 }
 
-// resolveExecPrompt 处理 stdin 输入：'-' 表示 prompt 从管道读入（对齐
-// codex exec - 的脚本化用法），其余原样返回。
+// resolveExecPrompt 处理 stdin 输入：'-' 表示 prompt 从管道读入（脚本化
+// 用法），其余原样返回。
 func resolveExecPrompt(arg string) (string, error) {
 	if strings.TrimSpace(arg) != "-" {
 		return arg, nil
@@ -129,7 +129,7 @@ func runExec(ctx context.Context, opts execOptions) error {
 		return err
 	}
 
-	// stream-json 走真增量 JSONL 流式（与 print 模式一致，对齐 codex exec --json）。
+	// stream-json 走真增量 JSONL 流式（与 print 模式一致的 JSONL 契约）。
 	if strings.EqualFold(strings.TrimSpace(opts.Output), "stream-json") {
 		if err := runStreamJSONTurn(ctx, engine, opts.Prompt, startedAt, ""); err != nil {
 			if ctx.Err() == context.DeadlineExceeded {

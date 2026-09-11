@@ -52,7 +52,7 @@ func (s *BridgeService) emitShellUpdatedForSessionWithSource(sessionID, source s
 	}()
 }
 
-// emitConversationDelta 发送轻量增量事件（对齐 codex item/agentMessage/delta）。
+// emitConversationDelta 发送轻量增量事件（item/agentMessage/delta）。
 // 零 RPC 往返——纯 Wails EventProcessor 调用，可在 stateMu 锁内安全调用（不阻塞、不开 goroutine）。
 // 前端据此 patch 单条消息的单个 item，无需全量 loadBootstrap。
 func (s *BridgeService) emitConversationDelta(payload ConversationDeltaPayload) {

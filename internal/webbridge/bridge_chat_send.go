@@ -94,7 +94,7 @@ func (svc *ChatService) SendChatWithReasoning(sessionID, workspace, input string
 	return response, nil
 }
 
-// ResumeFailedTurn 续跑当前会话最后一个失败的 turn（对齐 codex resume 语义）。
+// ResumeFailedTurn 续跑当前会话最后一个失败的 turn（resume 语义）。
 // 不追加用户消息：内核按已提交历史重建请求续写，GUI 只追加一个 assistant 占位
 // 消息承接续写输出。取代旧的「把最后一条用户输入塞回输入框重发」重试路径。
 func (svc *ChatService) ResumeFailedTurn(sessionID string) (BootstrapState, error) {

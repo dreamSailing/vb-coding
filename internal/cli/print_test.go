@@ -100,7 +100,7 @@ func TestPrintResult_OmitEmptyFields(t *testing.T) {
 }
 
 // TestBuildTurnCompletedEvent_AcceptsCoreAPIUsageSummary 验证 buildTurnCompletedEvent
-// 产出对齐 codex 的 turn.completed 事件结构（type=turn.completed + 嵌套 usage），
+// 产出 stream-json 收尾的 turn.completed 事件结构（type=turn.completed + 嵌套 usage），
 // 且消费 coreapi.UsageSummary（不再依赖 sharedcore）。
 func TestBuildTurnCompletedEvent_AcceptsCoreAPIUsageSummary(t *testing.T) {
 	input := 200
@@ -208,7 +208,7 @@ func TestRunSingleTurnConsumesTurnEventsBeforeStartReturns(t *testing.T) {
 
 // TestRunStreamJSONTurnEmitsIncrementalJSONL 验证 stream-json 真增量流：
 // turn.started → 逐个 item.* 事件 → turn.completed，每行一个 JSONL，
-// 对齐 codex exec --json 契约（不再是 start/content/done 三段伪流）。
+// 遵守 exec --json 的 JSONL 契约（不再是 start/content/done 三段伪流）。
 func TestRunStreamJSONTurnEmitsIncrementalJSONL(t *testing.T) {
 	events := make(chan protocol.Envelope, 8)
 	releaseStart := make(chan struct{})

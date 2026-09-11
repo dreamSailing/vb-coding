@@ -174,7 +174,7 @@ func (s *BridgeService) markItemApprovalLocked(
 func (s *BridgeService) handleConversationApprovalLocked(frame conversationEventFrame) {
 	review := s.pendingReviewReadOnly()
 	promptID := approvalIDFromEvent(frame.event)
-	// Codex 语义里，`tool.approval_required` 才是创建待审批对象的主事件；
+	// 协议语义里，`tool.approval_required` 才是创建待审批对象的主事件；
 	// `turn.waiting_approval` / `agent.waiting_approval` 只是"当前 turn/agent 正在等待"
 	// 的状态广播，不应再次生成审批态。
 	//

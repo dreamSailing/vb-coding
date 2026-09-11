@@ -42,7 +42,7 @@ func mergeConfigPermissions(flags *pflag.FlagSet, sandboxFlagName, accessMode, a
 // resolveModeConfig 把用户传入的访问/审批/沙箱模式解析成启动期 env 值。
 //
 // 沙箱轴与访问轴共用内核 SandboxMode 的 kebab-case 三值词表（read-only /
-// workspace-write / danger-full-access，对标 Codex sandbox_mode）：--access-mode
+// workspace-write / danger-full-access）：--access-mode
 // 是规范入口，--sandbox-mode / exec --sandbox 是历史别名（workspace→workspace-write、
 // full_access→danger-full-access）。两个 flag 显式同传且冲突时以 --access-mode 为准。
 //

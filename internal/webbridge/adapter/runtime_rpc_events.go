@@ -110,8 +110,8 @@ func (s *runtimeJSONRPCEventSink) Subscribe(ctx context.Context, filter runtimeJ
 // 关键约束：必须非阻塞。readLoop（stream_client.go:158）同步调用 Notify → publish，
 // 如果 publish 在某个 subscriber channel 满时阻塞，会卡死 readLoop → stdio 管道
 // 全局死锁（core 写 stdio 阻塞 → 不响应 Go 的 RPC → 所有 Call 阻塞）。
-// 因此 channel 满时丢弃事件（default 分支），绝不阻塞读循环。对齐 codex 的
-// 「notification handler 不阻塞 readLoop」原则。丢弃数经 slog.Warn 暴露，
+// 因此 channel 满时丢弃事件（default 分支），绝不阻塞读循环（notification
+// handler 不阻塞 readLoop 原则）。丢弃数经 slog.Warn 暴露，
 // 便于排查订阅者消费过慢导致的事件丢失。
 func (s *runtimeJSONRPCEventSink) publish(ctx context.Context, event Event) error {
 	if s == nil {

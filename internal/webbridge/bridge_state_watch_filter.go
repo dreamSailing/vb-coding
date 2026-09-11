@@ -10,7 +10,7 @@ import (
 // 状态监听事件过滤：op 级别 + 路径级别。
 // 只关心 .eos/skills、.eos/plugins 与 .agents/skills（SKILL.md 开放标准
 // interop 落点，目录经 skills 快照动态加入监视）下的变更；其余第三方目录
-// （.codex 等）兼容已移除。
+// 的兼容监听已移除。
 
 func isStateWatchOp(op fsnotify.Op) bool {
 	return op&(fsnotify.Create|fsnotify.Write|fsnotify.Remove|fsnotify.Rename) != 0

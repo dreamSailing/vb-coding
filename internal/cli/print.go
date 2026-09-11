@@ -85,7 +85,7 @@ func RunPrintMode(opts PrintOptions) error {
 	}
 
 	// stream-json 走真增量流式：订阅 turn 事件流，每个 item.* / 生命周期事件
-	// 原样吐出一行 JSONL（对齐 codex exec --json 的 JSONL 契约），
+	// 原样吐出一行 JSONL（exec --json 的 JSONL 契约），
 	// 不走 runSingleTurn 的"累积完整内容后统一输出"伪流。
 	if strings.EqualFold(strings.TrimSpace(opts.OutputFormat), "stream-json") {
 		if err := runStreamJSONTurn(ctx, engine, opts.Query, startedAt, opts.ModelOverride); err != nil {
@@ -198,9 +198,9 @@ func emitPrintResult(format string, result PrintResult, started time.Time, usage
 	return nil
 }
 
-// buildTurnCompletedEvent 构造 stream-json 的收尾行（对齐 codex exec --json 的
-// turn.completed 事件）。usage 以嵌套对象呈现，与 codex 的
-// {"usage":{"input_tokens":...,"output_tokens":...}} 契约一致。
+// buildTurnCompletedEvent 构造 stream-json 的收尾行（exec --json 的
+// turn.completed 事件）。usage 以嵌套对象呈现，遵循
+// {"usage":{"input_tokens":...,"output_tokens":...}} 契约。
 func buildTurnCompletedEvent(elapsed time.Duration, usage coreapi.UsageSummary) map[string]any {
 	u := map[string]any{}
 	if usage.InputTokens != nil {
@@ -280,7 +280,7 @@ func headlessRustCoreStoreDir() string {
 
 // runSingleTurn 启动一个 turn，订阅事件流直到 request.done/failed，返回 final 文本。
 //
-// 对 text 输出格式，每个 text_delta 实时写入 stdout（逐 chunk 涌现，对齐 codex 体验）；
+// 对 text 输出格式，每个 text_delta 实时写入 stdout（逐 chunk 涌现的流式体验）；
 // json/stream-json 仍只在 turn 结束后输出完整结构，保持机器可读契约不变。
 func runSingleTurn(ctx context.Context, engine coreapi.Engine, query, outputFormat, modelOverride string) (string, error) {
 	if engine == nil {
@@ -365,7 +365,7 @@ func runSingleTurn(ctx context.Context, engine coreapi.Engine, query, outputForm
 	}
 }
 
-// runStreamJSONTurn 以真增量 JSONL 流式输出一个 turn（对齐 codex exec --json）。
+// runStreamJSONTurn 以真增量 JSONL 流式输出一个 turn（exec --json 契约）。
 //
 // 订阅 turn 事件流，每个 item.* / 生命周期事件原样吐出一行 JSON 到 stdout：
 //   - turn.started / item.started / item.delta / item.completed 等事件 →
@@ -405,7 +405,7 @@ func runStreamJSONTurn(ctx context.Context, engine coreapi.Engine, query string,
 			fmt.Fprintln(os.Stdout, string(bs))
 		}
 	}
-	// turn.started 作为流的第一行（对齐 codex 的 turn.started 生命周期标记）。
+	// turn.started 作为流的第一行（turn 生命周期起始标记）。
 	writeJSONL(map[string]any{"type": "turn.started", "session_id": session.ID, "turn_id": turnID})
 
 	eventsCh := events

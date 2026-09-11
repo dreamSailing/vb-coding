@@ -716,7 +716,7 @@ type SaveSessionMessagesRequest struct {
 
 // ModeKind is the per-turn collaboration mode, mirroring eos-core's
 // ModeKind (snake_case on the wire). Only "plan" and "default" are
-// user-visible — the same set Codex exposes.
+// user-visible.
 type ModeKind string
 
 const (
@@ -737,8 +737,8 @@ type CollaborationModeSettings struct {
 }
 
 // CollaborationMode is a complete per-turn mode selection, sent by the
-// client on turn/start. Mirrors eos-core's CollaborationMode and Codex's
-// turn/start.collaborationMode. Takes precedence over model/reasoning in
+// client on turn/start. Mirrors eos-core's CollaborationMode and the
+// turn/start.collaborationMode wire field. Takes precedence over model/reasoning in
 // options.
 type CollaborationMode struct {
 	Mode     ModeKind                  `json:"mode"`
@@ -768,8 +768,7 @@ type Attachment struct {
 }
 
 // ApprovalDecision is the typed wire approval decision (camelCase on the wire),
-// mirroring eos-core's ApprovalDecision / Codex's CommandExecutionApprovalDecision
-// common variants. Command-only amendment variants are omitted: eos has no
+// mirroring eos-core's ApprovalDecision common variants. Command-only amendment variants are omitted: eos has no
 // execpolicy/network-amendment approval flows, so they would be dead code.
 type ApprovalDecision string
 

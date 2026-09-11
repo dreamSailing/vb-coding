@@ -153,7 +153,7 @@ func (m *AppModel) handleInlinePermissionKey(msg tea.KeyMsg) (bool, tea.Cmd) {
 		return true, func() tea.Msg { return result }
 	case "esc":
 		// Esc 决策不硬编码 "decline"（旧注释明写 "Esc passes decline explicitly"，
-		// 是壳层凭 permission 类型推断）。改为基于 options 推断，对齐 codex/eos-app。
+		// 是壳层凭 permission 类型推断）。改为基于 options 推断，与 eos-app 一致。
 		// 直接用 EscDecision 的 decision + idx 构造 ResultMsg，确保 Decision / Option /
 		// OptionIndex 三者一致（不走 buildInlinePermissionResult 的光标逻辑，光标位置
 		// 在 esc 时不代表用户选择）。
@@ -480,8 +480,8 @@ func (m *AppModel) handleConfirmResultMsg(msg confirm.ResultMsg) (tea.Model, tea
 		}
 		// Re-arm the status animation tick: the prior turn's tick loop may
 		// have stopped while waiting for approval, so without this the
-		// spinner stays frozen even though processing resumed. Mirrors
-		// codex's "busy ⇒ keep animating" self-scheduling spinner.
+		// spinner stays frozen even though processing resumed. The tick
+		// loop self-reschedules only while busy.
 		return m, m.shell.StatusTick()
 	}
 	if strings.HasPrefix(msg.Kind, "bg_kill:") {

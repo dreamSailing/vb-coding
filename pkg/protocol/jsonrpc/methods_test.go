@@ -18,7 +18,7 @@ func TestAllCoreMethodsFreezesMigrationSurface(t *testing.T) {
 	//     「顶部标签条 + 工具栏 + 视口尺寸行」布局的可操作 tab 支持）
 	//   + 1 model/verify（新增/编辑模型前的连通测试，桌面端向导前置校验）
 	//   + 1 turn/resume（续跑失败 turn：不追加用户消息，内核按已提交历史续写；
-	//     对齐 codex resume 语义，桌面端错误面板「重试」按钮的新链路）
+	//     resume 语义，桌面端错误面板「重试」按钮的新链路）
 	//   + 6 git 操作方法（repos/stage/commit/push/merge_abort/suggest_message，
 	//     桌面端 git 提交推送操作台：确定性 git 命令 + 一次性 LLM 提交信息）
 	//   + 1 lsp/install（语言服务一键安装：语言 → 生态安装命令映射，装后重探测）

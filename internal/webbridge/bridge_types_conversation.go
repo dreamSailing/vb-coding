@@ -48,7 +48,7 @@ type ChatMessage struct {
 	Prompts               []PromptCard      `json:"prompts,omitempty"`
 	ChangeSet             *MessageChangeSet `json:"changeSet,omitempty"`
 	IsPlaceholder         bool              `json:"isPlaceholder,omitempty"`
-	// Items 是结构化的 ThreadItem 列表（对齐 Codex 模型）。
+	// Items 是结构化的 ThreadItem 列表。
 	// assistant 消息的思考/正文/工具调用各是独立 item，按 ID 累积，一旦显示不被覆盖。
 	// 历史会话重载时按 metadata.turn_id 合并多条 SessionMessage 重建此列表。
 	// user 消息不用 items，Content 是 user 的唯一载体。
@@ -60,7 +60,7 @@ type ChatMessage struct {
 	turnID string `json:"-"`
 }
 
-// ThreadItem 是会话内一个离散输出项（对齐 Codex ThreadItem + 内核 TurnItem）。
+// ThreadItem 是会话内一个离散输出项（对应内核 TurnItem）。
 // 每个项有独立 ID 和类型，壳层按 ID 累积 delta，不会互相覆盖。
 type ThreadItem struct {
 	ID         string          `json:"id"`
@@ -73,14 +73,14 @@ type ThreadItem struct {
 	Category   string          `json:"category,omitempty"`   // tool_call 的分类（command/shell/file/mcp）
 	Level      string          `json:"level,omitempty"`      // status 的级别（info | warning | error）
 	Status     string          `json:"status,omitempty"`     // streaming | completed | failed
-	// Approval 承载审批/计划问题挂起态（对齐 codex：审批等待项 = 命令执行项，同一 item id）。
+	// Approval 承载审批/计划问题挂起态（审批等待项 = 命令执行项，同一 item id）。
 	// 非 nil 表示该 ToolCall item 正在等待用户决策；resolved 后翻转 State 并保留作为历史记录。
 	// 单一数据源：废弃了独立的 s.prompts 卡片轨 + status item 双轨制，审批浮层从此字段投影。
 	Approval *ItemApprovalState `json:"approval,omitempty"`
 }
 
 // ItemApprovalState 是挂在 ToolCall item 上的审批/问询挂起态。
-// 对齐 codex 的 CommandExecution lifecycle：同一个 call_id 的 item 用 approval.state
+// 生命周期跟随命令执行：同一个 call_id 的 item 用 approval.state
 // 表达 pending→approved/denied/executing/done 的流转，单一数据源、单一 delta 同步通道。
 type ItemApprovalState struct {
 	// ApprovalID 是内核 pending 表的 key（approval_{n}），approval/respond RPC 必须用它。
@@ -119,7 +119,7 @@ type ItemToolResult struct {
 	DurationMS int64  `json:"durationMs,omitempty"` // 执行耗时
 }
 
-// ConversationDeltaPayload 是流式增量事件的轻量 payload（对齐 codex 的 item/agentMessage/delta）。
+// ConversationDeltaPayload 是流式增量事件的轻量 payload（item/agentMessage/delta）。
 // 只带单条消息的单个 item 增量，前端据此 patch 单条消息，无需全量 loadBootstrap。
 // 零 RPC 往返——emit 是纯 Wails EventProcessor 调用，不查 core 状态。
 type ConversationDeltaPayload struct {
@@ -159,7 +159,7 @@ type TurnUsagePayload struct {
 	TotalTokens      int64  `json:"totalTokens"`
 	// LastPromptTokens 是最近一步模型返回的真实 prompt tokens ≈ 当前上下文规模。
 	// PromptTokens 是 turn 内各步累加（计费口径），多轮 ReAct 会远超窗口，
-	// 拿它当上下文占用会把占用环顶满到数倍窗口（对齐 codex last_token_usage）。
+	// 拿它当上下文占用会把占用环顶满到数倍窗口（占用口径 = last_token_usage）。
 	LastPromptTokens int64 `json:"lastPromptTokens"`
 	// ContextBreakdown 是上下文构成占比（旧内核无此字段时为 nil，浮层隐藏占比区）。
 	ContextBreakdown *ContextBreakdown `json:"contextBreakdown,omitempty"`

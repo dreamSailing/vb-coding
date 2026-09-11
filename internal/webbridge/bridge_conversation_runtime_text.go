@@ -57,7 +57,7 @@ func runtimeEventFromAdapterEvent(event adapter.Event, message string) (eventTyp
 		return "tool", fallbackText(runtimeToolTitle(payload, "工具完成"), fallbackText(message, "工具完成")), detail, "completed", true
 	case "turn.plan_delta":
 		// Plan deltas stream the <proposed_plan> block; render as a planning
-		// content card, not a tool event. Mirrors Codex's PlanDeltaNotification.
+		// content card, not a tool event (plan delta notification).
 		return "plan", fallbackText(message, "正在生成计划"), detail, "running", true
 	case "turn.request_user_input":
 		// The request_user_input tool suspended the turn; surface as an
@@ -80,7 +80,7 @@ func runtimeEventFromAdapterEvent(event adapter.Event, message string) (eventTyp
 	case "turn.retry":
 		// 内核模型流瞬态失败自动重试（payload: attempt/max_attempts/delay_ms/
 		// message）。展示为运行中状态的生命周期事件，让用户看到「正在重试」
-		// 而不是无解释的转圈；对齐 codex 的 "Reconnecting... n/N" 提示。
+		// 而不是无解释的转圈；标题带 "Reconnecting... n/N" 样式的进度提示。
 		attempt := metadataInt64(payload["attempt"])
 		maxAttempts := metadataInt64(payload["max_attempts"])
 		title := "模型连接中断，自动重试中"

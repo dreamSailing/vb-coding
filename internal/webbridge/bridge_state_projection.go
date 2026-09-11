@@ -150,7 +150,7 @@ func (p *StateProjectionService) LoadBootstrap(source string, scope BootstrapLoa
 	})
 }
 
-// gitBranchReadOnly 返回工作区所在 git 仓库的当前分支（对齐 Codex 状态栏
+// gitBranchReadOnly 返回工作区所在 git 仓库的当前分支（状态栏 git-branch 项：
 // git-branch 项：非 git 工作区 / git 不可用 / 查询失败一律返回空串，前端
 // 省略显示，不向用户报错）。分支属于「AI 操作的工作区所在仓库」，workspace
 // 为空时内核回填前台工作区。

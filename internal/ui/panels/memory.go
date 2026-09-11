@@ -2,8 +2,8 @@ package panels
 
 // 记忆面板：只读查看 ~/.eos/memories 的两个核心文件（memory_summary.md +
 // MEMORY.md，数据来自内核 memory/snapshot），并提供「添加记忆笔记」入口
-//（走内核 memory/save，语义 = 写一条 ad_hoc note）。交互对齐 Codex /memories
-// 的只读设计：面板不编辑记忆文件本身，生成/合并由内核写管线负责。
+//（走内核 memory/save，语义 = 写一条 ad_hoc note）。交互为只读设计：
+// 面板不编辑记忆文件本身，生成/合并由内核写管线负责。
 
 import (
 	"fmt"

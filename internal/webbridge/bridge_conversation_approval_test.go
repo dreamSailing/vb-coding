@@ -174,7 +174,7 @@ func TestSettlePromptLockedEmitsStatusDelta(t *testing.T) {
 }
 
 // TestApprovalMarksToolCallItem 验证审批挂起时 Approval 态挂到 ToolCall item 上
-// （单一数据源，对齐 codex）：内核 item_started 先到的 ToolCall item 应被标记。
+// （单一数据源）：内核 item_started 先到的 ToolCall item 应被标记。
 func TestApprovalMarksToolCallItem(t *testing.T) {
 	s := &BridgeService{prompts: map[string]*promptState{}}
 	session := &sessionState{

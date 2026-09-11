@@ -66,7 +66,7 @@ func (m *AppModel) maybeRefreshGitSummary() tea.Cmd {
 	return func() tea.Msg {
 		result, err := adapter.GitSummary(context.Background(), root)
 		if err != nil {
-			// 非 git 工作区 / git 不可用：按 Codex 惯例省略显示，不报错。
+			// 非 git 工作区 / git 不可用：省略显示，不报错。
 			return GitSummaryMsg{Branch: ""}
 		}
 		return GitSummaryMsg{Branch: result.Branch, Dirty: len(result.Changes), Ahead: int(result.Ahead)}

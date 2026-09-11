@@ -928,8 +928,8 @@ func (m *AppModel) restoreSessionHistory(id string) {
 			}
 			m.appendHistory(entry)
 		case kind == "reasoning":
-			// 思考内容：归档为暗色摘要一行（与实时完成归档一致，对齐
-			// codex/eos-app 的「思考过程」折叠块）。renderHistoryEntry 会把
+			// 思考内容：归档为暗色摘要一行（与实时完成归档一致，同
+			// eos-app 的「思考过程」折叠块）。renderHistoryEntry 会把
 			// reasoning kind 渲染成 "💭 Thinking · Xs" + 末行摘要。
 			content := strings.TrimSpace(msg.Content)
 			if content == "" {

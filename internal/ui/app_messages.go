@@ -85,7 +85,7 @@ func (m *AppModel) renderHistoryEntry(e historyEntry) string {
 			return e.content
 		case "reasoning":
 			// Archived thinking block: render as a dim one-line summary (the
-			// last non-empty line, truncated). Matches codex's persisted
+			// last non-empty line, truncated). Matches the persisted
 			// reasoning summary and the eos-app collapsed "思考过程" block.
 			return messages.LastNonEmptyLine(e.content)
 		default:
@@ -386,8 +386,8 @@ func (m *AppModel) handleAIResponse(msg AIResponseMsg) tea.Cmd {
 }
 
 // startAgentMessageItem begins a new text-segment item. Streaming updates stay
-// in aiLive until item_completed or a tool_call archives them (codex-style:
-// ItemStarted for AgentMessage does not commit partial text).
+// in aiLive until item_completed or a tool_call archives them (ItemStarted for
+// AgentMessage does not commit partial text).
 func (m *AppModel) startAgentMessageItem(itemID string) {
 	itemID = strings.TrimSpace(itemID)
 	if itemID != "" && itemID == m.activeItemID {
@@ -544,7 +544,7 @@ func (m *AppModel) handleItemCompleted(msg ItemCompletedMsg) {
 // 如果已有同 ID 的进行中卡片，只更新参数而非新建
 func (m *AppModel) handleToolCall(msg ToolCallMsg) tea.Cmd {
 	// A tool call starts: archive any in-progress text segment so the tool
-	// card appears after it (codex-style [text]→[tool] interleaving).
+	// card appears after it ([text]→[tool] interleaving).
 	m.archiveAgentMessage()
 	m.aiLive.Reset()
 	m.activeItemID = ""

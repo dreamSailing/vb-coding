@@ -8,7 +8,7 @@ import (
 
 // bridge_conversation_items.go 处理结构化 ThreadItem 列表的累积。
 //
-// 对齐 Codex ThreadItem 模型：内核发 turn.item_started / turn.item_delta /
+// 结构化 ThreadItem 模型：内核发 turn.item_started / turn.item_delta /
 // turn.item_completed 事件（带 item_id + kind + delta_type），bridge 按 item_id
 // 在 ChatMessage.Items 里累积，思考/正文/工具调用各是独立 item，一旦显示不被覆盖。
 //

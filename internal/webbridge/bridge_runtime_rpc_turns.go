@@ -19,7 +19,7 @@ type bridgeRuntimeGatewayResumeTurnStreamer interface {
 }
 
 // startResumeConversationTurnRPC 续跑失败 turn：不发送任何用户输入，直接调
-// turn/resume——内核按已提交历史重建请求续写（codex resume 语义）。turnID 由
+// turn/resume——内核按已提交历史重建请求续写（resume 语义）。turnID 由
 // 调用方预生成，供事件订阅过滤。
 func (s *BridgeService) startResumeConversationTurnRPC(ctx context.Context, sessionID, turnID string) (conversationStreamHandle, error) {
 	if s == nil || s.runtimeGatewayClient() == nil {
@@ -121,7 +121,7 @@ func (s *BridgeService) resolveOrCreateSessionRPC() string {
 
 func (s *BridgeService) callStartTurnStreamRPC(ctx context.Context, sessionID, input string, attachments []adapter.Attachment, turnID string, imagePaths []string) (<-chan adapter.Event, coreapi.Turn, error) {
 	// Map the global execution_mode ("plan" / "auto") to the per-turn
-	// collaboration_mode, mirroring Codex's turn/start.collaborationMode. When
+	// collaboration_mode carried on turn/start. When
 	// the user selects "plan", each turn carries Mode=Plan so the core injects
 	// plan.md, parses <proposed_plan>, and gates request_user_input.
 	req := coreapi.StartTurnRequest{
